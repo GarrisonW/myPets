@@ -6,6 +6,9 @@
     <string name="contacts_title">Emergency Contacts</string>
     <string name="emergency_contacts">Emergency Contacts</string>
 
+    <string name="button_emergency_contacts">Emergency Contacts</string>
+    <string name="button_find_vet">Find a Vet Now</string>
+
     <string name="add_pet">New Pet</string>
     <string name="action_remove_pet">Remove Pet</string>
     <string name="action_share_pet">Share</string>
