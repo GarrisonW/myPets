@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/abc_ab_solid_dark_holo">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/num_pets_summary"
+        android:text="@string/pet_contact_header"
+        android:textColor="@color/mypets_text"
+        android:gravity="center"
+        android:layout_gravity="top"
+        android:typeface="normal"
+        android:textStyle="bold"
+        android:textIsSelectable="false"
+        android:textAppearance="@android:style/TextAppearance.Large"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:id="@+id/listview_contacts"/>
+
+</LinearLayout>

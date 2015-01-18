@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/abc_ab_solid_dark_holo">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="25dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/imageview_pet_avatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/mypets_launcher"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name_title"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:textColor="@color/mypets_text"
+            android:textAppearance="@android:style/TextAppearance.Large"/>
+
+        <EditText xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:id="@+id/edittext_name"
+            android:hint="@string/edittext_name_hint"
+            android:textColor="@color/mypets_text_input"
+            android:textColorHint="@color/mypets_hint"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:autoText="true" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_weight="3">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/spinner_title_species"
+                android:textColor="@color/mypets_text"
+                android:typeface="normal"
+                android:textIsSelectable="false"
+                android:textAppearance="@android:style/TextAppearance.Large"/>
+
+            <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:id="@+id/spinner_species"
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/spinner_title_frequency"
+                android:textColor="@color/mypets_text"
+                android:textAppearance="@android:style/TextAppearance.Large"/>
+
+            <EditText xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:id="@+id/edittext_diet"
+                android:hint="@string/edittext_diet_hint"
+                android:textColor="@color/mypets_text_input"
+                android:textColorHint="@color/mypets_hint"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+
+            <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:id="@+id/spinner_frequency"
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/microchip_title"
+                android:textColor="@color/mypets_text"
+                android:textAppearance="@android:style/TextAppearance.Large"/>
+
+            <EditText xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edittext_microchip"
+                android:hint="@string/edittext_microchip_hint"
+                android:textColor="@color/mypets_text_input"
+                android:textColorHint="@color/mypets_hint"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<color name="mypets_tan">#89bdc39f</color>
+<color name="mypets_grey">#ffe1e1e1</color>
+<color name="mypets_text">#ffffffff</color>
+<color name="mypets_text_input">@color/mypets_grey</color>
+<color name="mypets_hint">@color/mypets_tan</color>
+</resources>
