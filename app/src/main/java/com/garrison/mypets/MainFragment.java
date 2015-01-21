@@ -100,6 +100,17 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         });
 
+        Button findVetButton = (Button) rootView.findViewById(R.id.button_find_vet);
+        emergencyContactsPicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //  Google places code
+                Intent intent = new Intent(getActivity(), ContactsActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
         return rootView;
     }
 
