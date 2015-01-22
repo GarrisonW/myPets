@@ -24,8 +24,6 @@
     <string name="share_email_subject">Notification from MyPets</string>
     <string name="share_message">Hello, Just a quick note to let you know I have added you as an emergency caretaker for my pets.</string>
 
-    <string name="content_authority">com.garrison.mypets</string>
-
     <string name="notify_title">Contact Removed</string>
 
     <string name="startup_text">Add a pet by accessing the menu and selecting <xliff:g id="q1">"</xliff:g>New Pet<xliff:g id="q">"</xliff:g></string>
@@ -52,5 +50,12 @@
         <item>Ferret</item>
         <item>Panda</item>
     </string-array>
+
+    <!-- Account type (for sync-adapter authenticator) -->
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">garrison.mypets.com</string>
+    <string name="content_authority">com.garrison.mypets</string>
+
+
 
 </resources>
