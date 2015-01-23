@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.mypets.Utility;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,9 +11,9 @@ import android.util.Log;
 /**
  * Created by Garrison on 11/3/2014.
  */
-public class Utility {
+public class ImageHandler {
 
-    private static final String LOG_TAG = Utility.class.getSimpleName();
+    private static final String LOG_TAG = ImageHandler.class.getSimpleName();
 
     public static String getRealPathFromURI(Context context, Uri contentUri) {
         Cursor cursor = null;
@@ -42,7 +42,7 @@ public class Utility {
         // Decode bitmap with inSampleSize set
         options.inJustDecodeBounds = true;
 
-        String absoluteUri = Utility.getRealPathFromURI(context, Uri.parse(photoUri));
+        String absoluteUri = ImageHandler.getRealPathFromURI(context, Uri.parse(photoUri));
         BitmapFactory.decodeFile(absoluteUri, options);
 
 

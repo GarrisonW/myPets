@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.garrison.mypets.Utility.ImageHandler;
+
 /**
  * Created by Garrison on 10/4/2014.
  */
@@ -39,7 +41,7 @@ public class MainPetsListAdapter extends CursorAdapter {
         String avatarUri = cursor.getString(MainFragment.ADAPTER_BINDER_COL_AVATAR);
         if (avatarUri != null) {
             mAvatarUri = Uri.parse(avatarUri);
-            Bitmap sizedBitmap = Utility.resizeImage(context, avatarUri, 25, 25);
+            Bitmap sizedBitmap = ImageHandler.resizeImage(context, avatarUri, 25, 25);
             viewHolder.petAvatarImageView.setImageBitmap(sizedBitmap);
         }
 

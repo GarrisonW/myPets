@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.garrison.mypets.Utility.ImageHandler;
 import com.garrison.mypets.data.MyPetsContract.PetTable;
 
 /**
@@ -154,7 +155,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
            mAvatarUriString = savedInstanceState.getString(BUNDLE_AVATAR_URI);
 
            if (mAvatarUriString != null) {
-               mSizedBitmap  = Utility.resizeImage(mContext, mAvatarUriString, 40, 40);
+               mSizedBitmap  = ImageHandler.resizeImage(mContext, mAvatarUriString, 40, 40);
                petAvatar.setImageBitmap(mSizedBitmap);
                Log.v(LOG_TAG, "BITMAP SIZE: W: " + mSizedBitmap.getWidth() + " H: " + mSizedBitmap.getHeight());
            }
@@ -213,7 +214,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
             mImageUri = data.getData();
             mAvatarUriString = mImageUri.toString();
 
-            mSizedBitmap  = Utility.resizeImage(mContext, mAvatarUriString, 40, 40);
+            mSizedBitmap  = ImageHandler.resizeImage(mContext, mAvatarUriString, 40, 40);
             ImageView petAvatarImageView = (ImageView) viewHolder.petAvatarImageView;
             petAvatarImageView.setImageBitmap(mSizedBitmap);
 
@@ -324,7 +325,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
             mAvatarUriString = data.getString(data.getColumnIndex(PetTable.COLUMN_AVATAR_URI));
 
             if (mAvatarUriString != null) {
-                mSizedBitmap = Utility.resizeImage(mContext, mAvatarUriString, 40, 40);
+                mSizedBitmap = ImageHandler.resizeImage(mContext, mAvatarUriString, 40, 40);
                 viewHolder.petAvatarImageView.setImageBitmap(mSizedBitmap);
             }
 
