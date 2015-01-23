@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.garrison.mypets.Utility.ImageHandler;
+import com.garrison.mypets.utility.ImageHandler;
 import com.garrison.mypets.data.MyPetsContract.PetTable;
 
 /**
