@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.garrison.mypets.Utility.ImageHandler;
+import com.garrison.mypets.utility.ImageHandler;
 
 /**
  * Created by Garrison on 10/4/2014.
