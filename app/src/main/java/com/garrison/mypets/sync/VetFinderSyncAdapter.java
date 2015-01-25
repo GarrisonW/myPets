@@ -2,70 +2,39 @@ package com.garrison.mypets.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SyncResult;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.garrison.mypets.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Vector;
-
+/*
 import app.com.example.garrison.sunshine.MainActivity;
 import app.com.example.garrison.sunshine.R;
 import app.com.example.garrison.sunshine.Utility;
 import app.com.example.garrison.sunshine.data.WeatherContract;
-
+*/
 /**
  * Created by Garrison on 9/21/2014.
  */
 public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final String LOG_TAG = VetFinderSyncAdapter.class.getSimpleName();
-    HttpURLConnection urlConnection = null;
+
+    public static String locationString = null;
     BufferedReader reader = null;
-    String forecastJsonStr = null;
-
-    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-    private static final int WEATHER_NOTIFICATION_ID = 3004;
-
-    private static final String[] NOTIFY_WEATHER_PROJECTION = new String[] {
-            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
-            WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_MIN_TEMP,
-            WeatherContract.WeatherEntry.COLUMN_SHORT_DESC
-    };
-
-    // these indices must match the projection
-    private static final int INDEX_WEATHER_ID = 0;
-    private static final int INDEX_MAX_TEMP = 1;
-    private static final int INDEX_MIN_TEMP = 2;
-    private static final int INDEX_SHORT_DESC = 3;
-
 
     public VetFinderSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -75,40 +44,52 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
         Log.d(LOG_TAG, "Starting sync");
 
-        String locationQuery = Utility.getPreferredLocation(getContext());
-        SharedPreferences sPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        HttpURLConnection urlConnection = null;
 
-        int numDays = 14;
-        String units = sPref.getString(getContext().getString(R.string.pref_units_key), getContext().getString(R.string.pref_units_default));
-        String format = "json";
-        String days = "14";
+        String android_API_Key = getContext().getString(R.string.android_api_key);
+        String browser_API_Key = getContext().getString(R.string.browser_api_key);
+        String server_API_Key = getContext().getString(R.string.server_api_key);
+        String radius = "50000";  //  In meters
+        String types = "veterinary_care";
+
+        // https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=AIzaSyBmOJLOl_H9p2biJlv2vO6XI0q0W27IICU&location=40.4678401,-88.9850614&radius=50000&types=veterinary_care
+        Uri builder = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?").buildUpon()
+                //  Required paramters
+                //.appendQueryParameter("key", browser_API_Key)
+                .appendQueryParameter("key", server_API_Key)
+                //.appendQueryParameter("key", android_API_Key)
+                .appendQueryParameter("location", locationString)
+                .appendQueryParameter("radius", radius)
+
+                        // Optional
+                .appendQueryParameter("types", types)
+
+                .build();
+
+        URL vetsURL = null;
         try {
-            // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are avaiable at OWM's forecast API page, at
-            // http://openweathermap.org/API#forecast
-            Uri builder = Uri.parse("http://api.openweathermap.org/data/2.5/forecast/daily?").buildUpon()
-                    .appendQueryParameter("q", locationQuery + ",usa")
-                    .appendQueryParameter("mode", format)
-                    .appendQueryParameter("units", units)
-                    .appendQueryParameter("cnt", days)
-                    .build();
-            URL weatherURL = new URL(builder.toString());
+            vetsURL = new URL(builder.toString());
+        }
+        catch (MalformedURLException mue) {
+            Log.e(LOG_TAG, "URL is Malformed: " + builder.toString());
+            return;
+        }
 
-            // Create the request to OpenWeatherMap, and open the connection
-            urlConnection = (HttpURLConnection) weatherURL.openConnection();
+        try {
+            // Open the connection
+            urlConnection = (HttpURLConnection) vetsURL.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
-
-            // Read the input stream into a String
             InputStream inputStream = urlConnection.getInputStream();
-
-            StringBuffer buffer = new StringBuffer();
             if (inputStream == null) {
-                // Nothing to do.
+                Log.v(LOG_TAG, "No data returned");// Nothing to do.
                 return;
             }
+
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
+            StringBuffer buffer = new StringBuffer();
+            // Read the input stream into a String
             String line;
             while ((line = reader.readLine()) != null) {
                 // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
@@ -117,16 +98,15 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
                 buffer.append(line + "\n");
 
             }
+            String vetString = buffer.toString();
+            Log.v(LOG_TAG, "VET STRING: " + vetString);
             if (buffer.length() == 0) {
-                // Stream was empty.  No point in parsing.
+                Log.e(LOG_TAG, "Empty String");
                 return;
             }
-            forecastJsonStr = buffer.toString();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
-            // If the code didn't successfully get the weather data, there's no point in attempting
-            // to parse it.
-            return;
+        }
+        catch (IOException ioe) {
+            Log.e(LOG_TAG, "MYPETS IO ERROR: " + ioe.getMessage());
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -140,6 +120,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         }
 
+/*
         try {
             getWeatherDataFromJson(forecastJsonStr, numDays, locationQuery);
             if ( sPref.getBoolean(getContext().getString(R.string.pref_notifications_key), true))
@@ -154,6 +135,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         } catch (JSONException je) {
             Log.e(LOG_TAG, "JSON error: ", je);
         }
+*/
         return;
     }
     /**
@@ -206,16 +188,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         }
         return newAccount;
     }
-
-    /**
-     * Helper method to handle insertion of a new location in the weather database.
-     *
-     * @param locationSetting The location string used to request updates from the server.
-     * @param cityName A human-readable city name, e.g "Mountain View"
-     * @param lat the latitude of the city
-     * @param lon the longitude of the city
-     * @return the row ID of the added location.
-     */
+/*
     private long addLocation(String locationSetting, String cityName, double lat, double lon) {
 
         Log.v(LOG_TAG, "inserting " + cityName + ", with coord: " + lat + ", " + lon);
@@ -245,7 +218,10 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
             return ContentUris.parseId(locationInsertUri);
         }
+
+        return 5;
     }
+
     private void getWeatherDataFromJson(String forecastJsonStr, int numDays,
                                         String locationSetting)throws JSONException {
 
@@ -338,6 +314,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
                 ContentValues weatherValues = new ContentValues();
                 Log.v(LOG_TAG, "Short Desc: " + description);
+                /*
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_LOC_KEY, locationID);
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_DATETEXT,
                         WeatherContract.getDbDateString(new Date(dateTime * 1000L)));
@@ -350,14 +327,16 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_SHORT_DESC, description);
                 weatherValues.put(WeatherContract.WeatherEntry.COLUMN_WEATHER_ID, weatherId);
 
+
                 cVVector.add(weatherValues);
 
                 if (cVVector.size() > 0) {
                     ContentValues[] cvArray = new ContentValues[cVVector.size()];
                     cVVector.toArray(cvArray);
-                    int rowsInserted = getContext().getContentResolver()
-                            .bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cvArray);
- Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of weather data");
+//                    int rowsInserted = getContext().getContentResolver()
+//                            .bulkInsert(WeatherContract.WeatherEntry.CONTENT_URI, cvArray);
+// Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of weather data");
+
                 }
 
             }
@@ -365,76 +344,10 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         catch (JSONException je) {
             Log.e(LOG_TAG, je.getLocalizedMessage());
         }
+
     }
-
-    private void notifyWeather() {
-Log.v(LOG_TAG, "WE are to NOTIFY on weather");
-        Context context = getContext();
-        //checking the last update and notify if it' the first of the day
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        String lastNotificationKey = context.getString(R.string.pref_last_notification);
-        long lastSync = prefs.getLong(lastNotificationKey, 0);
-
-        if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
-            // Last sync was more than 1 day ago, let's send a notification with the weather.
-            String locationQuery = Utility.getPreferredLocation(context);
-
-            Uri weatherUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationQuery, WeatherContract.getDbDateString(new Date()));
-
-            // we'll query our contentProvider, as always
-            Cursor cursor = context.getContentResolver().query(weatherUri, NOTIFY_WEATHER_PROJECTION, null, null, null);
-
-            if (cursor.moveToFirst()) {
-                int weatherId = cursor.getInt(INDEX_WEATHER_ID);
-                double high = cursor.getDouble(INDEX_MAX_TEMP);
-                double low = cursor.getDouble(INDEX_MIN_TEMP);
-                String desc = cursor.getString(INDEX_SHORT_DESC);
-
-                int iconId = Utility.getIconResourceForWeatherCondition(weatherId);
-                String title = context.getString(R.string.app_name);
-
-                // Define the text of the forecast.
-                String contentText = String.format(context.getString(R.string.format_notification),
-                        desc,
-                        Utility.formatTemperature(context, high, Utility.isMetric(context)),
-                        Utility.formatTemperature(context, low, Utility.isMetric(context)));
-
-                //build your notification here.
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(iconId)
-                                .setContentTitle(title)
-                                .setContentText(contentText);
-                // Creates an explicit intent for an Activity in your app
-                Intent resultIntent = new Intent(context, MainActivity.class);
-
-                // The stack builder object will contain an artificial back stack for the
-                // started Activity.
-                // This ensures that navigating backward from the Activity leads out of
-                // your application to the Home screen.
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                // Adds the back stack for the Intent (but not the Intent itself)
-                stackBuilder.addParentStack(MainActivity.class);
-// Adds the Intent that starts the Activity to the top of the stack
-                stackBuilder.addNextIntent(resultIntent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(
-                                0,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
-                mBuilder.setContentIntent(resultPendingIntent);
-                NotificationManager mNotificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
-                mNotificationManager.notify(WEATHER_NOTIFICATION_ID, mBuilder.build());
-
-
-                //refreshing last sync
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putLong(lastNotificationKey, System.currentTimeMillis());
-                editor.commit();
-            }
-        }
-
+*/
+     public static void setLocation(String loc) {
+        locationString = loc;
     }
 }
