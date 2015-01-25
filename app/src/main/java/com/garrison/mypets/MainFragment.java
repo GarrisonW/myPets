@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.garrison.mypets.data.MyPetsContract.PetTable;
 import com.garrison.mypets.sync.VetFinderSyncAdapter;
-import com.garrison.mypets.utility.LocationFinder;
+import com.garrison.mypets.util.LocationFinder;
 
 /**
  * Created by Garrison on 9/29/2014.
