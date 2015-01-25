@@ -22,7 +22,7 @@ import android.widget.TextView;
 
 import com.garrison.mypets.data.MyPetsContract.PetTable;
 import com.garrison.mypets.sync.VetFinderSyncAdapter;
-import com.garrison.mypets.utility.MyLocation;
+import com.garrison.mypets.utility.LocationFinder;
 
 /**
  * Created by Garrison on 9/29/2014.
@@ -116,7 +116,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     public void loadVetMap() {
         // Finding location in Synch Adapter causes proble with "Looper"
-        String locationString = MyLocation.getLocationLongLatString(getActivity());
+        String locationString = LocationFinder.getLocationLongLatString(getActivity());
         VetFinderSyncAdapter.setLocation(locationString);
 
         VetFinderSyncAdapter.syncImmediately(getActivity());
