@@ -1,4 +1,4 @@
-package com.garrison.mypets.Utility;
+package com.garrison.mypets.util;
 
 import android.content.Context;
 import android.database.Cursor;
