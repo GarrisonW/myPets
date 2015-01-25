@@ -21,6 +21,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.garrison.mypets.data.MyPetsContract.PetTable;
+import com.garrison.mypets.sync.VetFinderSyncAdapter;
+import com.garrison.mypets.utility.MyLocation;
 
 /**
  * Created by Garrison on 9/29/2014.
@@ -95,23 +97,29 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Cursor cursor = mMainPetsListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(i)) {
-                    ((Callback)getActivity()).onItemSelected(cursor.getInt(ADAPTER_BINDER_COL_PET_ID));
+                    ((Callback) getActivity()).onItemSelected(cursor.getInt(ADAPTER_BINDER_COL_PET_ID));
                 }
             }
         });
 
         Button findVetButton = (Button) rootView.findViewById(R.id.button_find_vet);
-        emergencyContactsPicker.setOnClickListener(new View.OnClickListener() {
+        findVetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //  Google places code
-                Intent intent = new Intent(getActivity(), ContactsActivity.class);
-                startActivity(intent);
+                loadVetMap();
             }
 
         });
 
         return rootView;
+    }
+
+    public void loadVetMap() {
+        // Finding location in Synch Adapter causes proble with "Looper"
+        String locationString = MyLocation.getLocationLongLatString(getActivity());
+        VetFinderSyncAdapter.setLocation(locationString);
+
+        VetFinderSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
