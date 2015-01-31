@@ -118,7 +118,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         // Finding location in Synch Adapter causes proble with "Looper"
         String locationString = LocationFinder.getLocationLongLatString(getActivity());
         VetFinderSyncAdapter.setLocation(locationString);
-
         VetFinderSyncAdapter.syncImmediately(getActivity());
     }
 
