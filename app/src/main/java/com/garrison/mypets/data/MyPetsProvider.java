@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.garrison.mypets.data.MyPetsContract.PetTable;
 import com.garrison.mypets.data.MyPetsContract.PetsEmergencyContactsTable;
+import com.garrison.mypets.data.MyPetsContract.VetsTable;
 
 /**
  * Created by Garrison on 10/1/2014.
@@ -25,10 +26,8 @@ public class MyPetsProvider extends ContentProvider {
     private static final int EMERGENCY_CONTACTS_BY_ID = 201;
     private static final int EMERGENCY_CONTACTS_BY_LOOKUP_ID = 202;
 
-    /*
-    private static final int EVENT = 300;
-    private static final int MEDs = 400;
-    */
+    private static final int VETS = 300;
+    private static final int VET_BY_ID = 301;
 
     MyPetsDBHelper mDBHelper = null;
     UriMatcher sUriMatcher = buildUriMatcher();
@@ -55,7 +54,7 @@ public class MyPetsProvider extends ContentProvider {
     public boolean onCreate() {
 
        //CLEAR DATABASE FOR TESTING:
-//getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
+getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
         mDBHelper = new MyPetsDBHelper(getContext());
         return true;
     }
@@ -110,7 +109,21 @@ public class MyPetsProvider extends ContentProvider {
 
                 break;
             }
+            case VETS:
+            {
+                retCursor = db.query(
+                        VetsTable.TABLE_NAME,
+                        projection,
+                        queryString,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                //retCursor.close();
 
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown URI: " + uri);
         }
@@ -166,6 +179,24 @@ public class MyPetsProvider extends ContentProvider {
 
                 if ( _id > 0 )
                     returnUri = PetTable.buildPetUri(_id);
+                else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
+            }
+            case VETS: {
+                try{
+                    _id = db.insert(VetsTable.TABLE_NAME, null, contentValues);
+                }
+                catch (Exception dbEx){
+                    Log.e(LOG_TAG, "We have a db error on insert: " + dbEx.getMessage());
+                }
+                finally{
+                    db.close();
+                }
+
+                if ( _id > 0 )
+                    returnUri = VetsTable.builVetsUri(_id);
                 else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -252,6 +283,19 @@ public class MyPetsProvider extends ContentProvider {
                 }
                 break;
             }
+            case VETS: {
+                try {
+                    numRows = db.delete(VetsTable.TABLE_NAME,
+                            selection,
+                            null
+                    );
+                } catch (Exception dbEx) {
+                    Log.e(LOG_TAG, "We have a db error on delete: " + dbEx.getMessage());
+                } finally {
+                    db.close();
+                }
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown URI: " + uri);
 
@@ -317,9 +361,11 @@ public class MyPetsProvider extends ContentProvider {
 
         uriMatcher.addURI(authority, MyPetsContract.PATH_PET, PETS);
         uriMatcher.addURI(authority, MyPetsContract.PATH_PET + "/#", PET_BY_ID);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_EMER_CONTACT_PET, EMERGENCY_CONTACTS);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_EMER_CONTACT_PET + "/#", EMERGENCY_CONTACTS_BY_ID);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_EMER_CONTACT_PET + "/*", EMERGENCY_CONTACTS_BY_LOOKUP_ID);
+        uriMatcher.addURI(authority, MyPetsContract.PATH_EMERGENCY_CONTACT, EMERGENCY_CONTACTS);
+        uriMatcher.addURI(authority, MyPetsContract.PATH_EMERGENCY_CONTACT + "/#", EMERGENCY_CONTACTS_BY_ID);
+        uriMatcher.addURI(authority, MyPetsContract.PATH_EMERGENCY_CONTACT + "/*", EMERGENCY_CONTACTS_BY_LOOKUP_ID);
+        uriMatcher.addURI(authority, MyPetsContract.PATH_VETS, VETS);
+        uriMatcher.addURI(authority, MyPetsContract.PATH_VETS + "/#", VET_BY_ID);
 
         return uriMatcher;
     }

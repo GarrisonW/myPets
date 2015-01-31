@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.garrison.mypets.data.MyPetsContract.PetTable;
 import com.garrison.mypets.data.MyPetsContract.PetsEmergencyContactsTable;
+import com.garrison.mypets.data.MyPetsContract.VetsTable;
 
 /**
  * Created by Garrison on 10/1/2014.
@@ -44,7 +45,17 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
                 PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_PRIMARY    + " TEXT, " +
                 PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_PHOTO_URI  + " TEXT, " +
                 PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_EMAIL      + " TEXT, " +
-                PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_STATE      + " INTEGER); " ;  // 0 - blank; 1 - valid contact
+                PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_STATE      + " INTEGER); " ;  // 0 - blank contact; 1 - valid contact
+
+        final String SQL_CREATE_VETS_TABLE = "CREATE TABLE " + VetsTable.TABLE_NAME + " (" +
+                VetsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                VetsTable.COLUMN_VET_NAME     + " TEXT, " +
+                VetsTable.COLUMN_VET_ADDRESS    + " TEXT, " +
+                VetsTable.COLUMN_VET_PHONE  + " TEXT, " +
+                VetsTable.COLUMN_VET_OPEN      + " BOOLEAN, " +
+                VetsTable.COLUMN_VET_LATITUDE      + " FLOAT, " +
+                VetsTable.COLUMN_VET_LONGITUDE      + " FLOAT, " +
+                VetsTable.COLUMN_VET_MY_VET     + " BOOLEAN); " ;
 
         // Set up the location column as a foreign key to location table.
         //" FOREIGN KEY (" + PetEntry.COLUMN_VET_KEY + ") REFERENCES " +        // Future
@@ -52,7 +63,9 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(SQL_CREATE_PET_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_EMERGENCY_CONTACTS_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_VETS_TABLE);
 
+        //  Preload Contacts Table
         ContentValues args = new ContentValues();
         String nullString = null;
         args.put(PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_LOOKUP,    nullString);

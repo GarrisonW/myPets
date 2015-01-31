@@ -14,12 +14,8 @@ public class MyPetsContract {
     public static Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static String PATH_PET = "pets";
-    public static String PATH_EMER_CONTACT_PET = "contacts";
-
-    //  Future
-    //public static String PATH_PET_EVENT = "petevents";
-    //public static String PATH_PET_MEDS =  "meds";
-
+    public static String PATH_EMERGENCY_CONTACT = "contacts";
+    public static String PATH_VETS = "vets";
 
     /* Inner class that defines the table contents of the weather table */
     public static final class PetTable implements BaseColumns {
@@ -56,9 +52,9 @@ public class MyPetsContract {
 
     public static final class PetsEmergencyContactsTable implements BaseColumns {
 
-        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EMER_CONTACT_PET).build();
-        public static String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_EMER_CONTACT_PET;
-        public static String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EMER_CONTACT_PET;
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_EMERGENCY_CONTACT).build();
+        public static String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_EMERGENCY_CONTACT;
+        public static String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_EMERGENCY_CONTACT;
 
         public static final String TABLE_NAME = "emergency";
 
@@ -86,19 +82,36 @@ public class MyPetsContract {
         }
     }
 
-    /*  Future
-    public static final class PetEventTable implements BaseColumns {
 
-        public static final String TABLE_NAME = "events";
+    public static final class VetsTable implements BaseColumns {
 
-        public static final String COLUMN_EVENT_TYPE = "event_type";
-        public static final String COLUMN_EVENT_NOTIFY = "event_notify";
-        public static final String COLUMN_FREQUENCY = "event_frequency";
+        public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VETS).build();
+        public static String CONTENT_TYPE = "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_VETS;
+        public static String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_VETS;
 
-        // foreign key
-        public static final String COLUMN_PET_KEY = "pet_id";
+        public static final String TABLE_NAME = "vets";
 
+        // Vet name
+        public static final String COLUMN_VET_NAME = "vetName";
+        // Vet address
+        public static final String COLUMN_VET_ADDRESS = "address";
+        // Vet phone
+        public static final String COLUMN_VET_PHONE = "phone";
+        // Vet business status
+        public static final String COLUMN_VET_OPEN = "open";
+        // Vet business status
+        public static final String COLUMN_VET_LATITUDE = "latitude";
+        // Vet business status
+        public static final String COLUMN_VET_LONGITUDE = "longitude";
+        // Vet business status
+        public static final String COLUMN_VET_MY_VET = "myVet";
+
+        //   Setters and getters for Content Provider Uri - Vets Table
+        public static Uri buildVetsUri() {
+            return CONTENT_URI;
+        }
+        public static Uri builVetsUri(long _id) {
+            return ContentUris.withAppendedId(CONTENT_URI, _id);
+        }
     }
-    */
-
 }
