@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="http://schemas.android.com/apk/res/android"> >
-
     <string name="app_name">myPets</string>
+
+    <string name="pref_latitude">storedLatitude</string>
+    <string name="pref_longitude">storedLongitude</string>
 
     <string name="contacts_title">Emergency Contacts</string>
     <string name="emergency_contacts">Emergency Contacts</string>
