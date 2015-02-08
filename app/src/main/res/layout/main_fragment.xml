@@ -19,6 +19,19 @@
         android:textAppearance="@android:style/TextAppearance.Large"
         android:background="@color/mypets_tan" />
 
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:id="@+id/button_find_vet"
+        android:text="@string/button_find_vet"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/button_find_vet"
+        android:textColor="@color/mypets_yellow"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:background="@color/mypets_tan" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="55dp"
@@ -34,20 +47,8 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="189dp"
         android:id="@+id/listview_pets" />
 
-    <Button
-        android:layout_width="250dp"
-        android:layout_height="100dp"
-        android:id="@+id/button_find_vet"
-        android:text="@string/button_find_vet"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
-        android:hint="@string/emergency_contacts"
-        android:textColor="@color/mypets_yellow"
-        android:textAppearance="@android:style/TextAppearance.Large"
-        android:background="@color/mypets_tan" />
 
 </LinearLayout>
