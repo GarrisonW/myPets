@@ -21,7 +21,9 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
         Intent mServiceIntent = new Intent(this, ContactsNotificationService.class);
         startService(mServiceIntent);
 
-        loadVetData();
+        String locationString = LocationFinder.getLocationLongLatString(this);
+        VetFinderSyncAdapter.setLocationString(locationString);
+        VetFinderSyncAdapter.syncImmediately(this);
 
         MainFragment mainPetsFragment = (MainFragment) getSupportFragmentManager()
         .findFragmentById(R.id.fragment_main);
@@ -33,11 +35,5 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
 
         Intent intent = new Intent(this, PetActivity.class).putExtra(Intent.EXTRA_TEXT, _ID);
         startActivity(intent);
-    }
-
-    public void loadVetData() {
-        String locationString = LocationFinder.getLocationLongLatString(this);
-        VetFinderSyncAdapter.setLocation(locationString);
-        VetFinderSyncAdapter.syncImmediately(this);
     }
 }

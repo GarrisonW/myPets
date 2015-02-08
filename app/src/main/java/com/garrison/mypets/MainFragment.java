@@ -24,10 +24,12 @@ import com.garrison.mypets.data.MyPetsContract.PetTable;
 import com.garrison.mypets.sync.VetFinderSyncAdapter;
 import com.garrison.mypets.util.LocationFinder;
 
+import java.io.BufferedReader;
+
 /**
  * Created by Garrison on 9/29/2014.
  */
-public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>   {
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = MainFragment.class.getSimpleName();
     private static final int PET_LOADER = 0;
@@ -35,6 +37,8 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     private int numberOfPets = -1;
     private ListView petListView = null;
     private MainPetsListAdapter mMainPetsListAdapter = null;
+
+    BufferedReader reader = null;
 
     TextView mPetCountTextView = null;
 
@@ -106,19 +110,21 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         findVetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadVetMap();
+                Context context = getActivity();
+                //  If the user location has changed (significantly) since loading the app, reload the data
+                boolean userMoved = LocationFinder.userLocationChanged(context);
+                //if (userMoved) {
+                  String locationString = LocationFinder.getLocationLongLatString(context);
+                  VetFinderSyncAdapter.setLocationString(locationString);
+                  VetFinderSyncAdapter.syncImmediately(context);
+                //}
+                Intent intent = new Intent(context, VetsMapActivity.class);
+                startActivity(intent);
             }
 
         });
 
         return rootView;
-    }
-
-    public void loadVetMap() {
-        // Finding location in Synch Adapter causes proble with "Looper"
-        String locationString = LocationFinder.getLocationLongLatString(getActivity());
-        VetFinderSyncAdapter.setLocation(locationString);
-        VetFinderSyncAdapter.syncImmediately(getActivity());
     }
 
     @Override
@@ -132,7 +138,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
         int id = item.getItemId();
         if (id == R.id.action_add_pet) {
-            ((Callback)getActivity()).onItemSelected(-1);
+            ((Callback) getActivity()).onItemSelected(-1);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -144,8 +150,9 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         getLoaderManager().restartLoader(PET_LOADER, null, this);
     }
 
-    /**********************************************************************************************
-     *  Cursor Loader for List
+    /**
+     * *******************************************************************************************
+     * Cursor Loader for List
      */
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -171,11 +178,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
         if (numberOfPets == 0)
             formattedPetCount = context.getString(R.string.startup_text);
+        else if (numberOfPets == 1)
+            formattedPetCount = context.getString(R.string.formatted_pet_one);
         else
-            if (numberOfPets == 1)
-                formattedPetCount = context.getString(R.string.formatted_pet_one);
-            else
-                formattedPetCount = context.getString(R.string.formatted_pet_count, numberOfPets);
+            formattedPetCount = context.getString(R.string.formatted_pet_count, numberOfPets);
         mPetCountTextView.setText(formattedPetCount);
         mMainPetsListAdapter.swapCursor(data);
     }
@@ -190,4 +196,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
         public void onItemSelected(int _ID);
     }
+
+
 }

@@ -66,7 +66,6 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         super.onCreate(savedInstanceState);
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.contacts_fragment, container, false);
@@ -81,6 +80,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
         return rootView;
     }
+
 
     @Override
     public void onResume() {
