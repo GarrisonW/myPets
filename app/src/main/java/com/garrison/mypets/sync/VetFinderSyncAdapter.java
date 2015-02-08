@@ -36,14 +36,17 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private final String LOG_TAG = VetFinderSyncAdapter.class.getSimpleName();
 
-    public static String locationString = null;
+    private static Context context = null;
+    private static String locationString = null;
+
     BufferedReader reader = null;
 
-    public VetFinderSyncAdapter(Context context, boolean autoInitialize) {
-        super(context, autoInitialize);
+    public VetFinderSyncAdapter(Context ctxt, boolean autoInitialize) {
+        super(ctxt, autoInitialize);
+        context = ctxt;
     }
 
-    /*  Android 3.0 specification (for parallel syncs) when version 10 is no longer supported
+    /*  Android 3.0 specification (for parallel syncs).  Implement when version 10 is no longer supported
     public VetFinderSyncAdapter(
             Context context,
             boolean autoInitialize,
@@ -52,9 +55,9 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
     }
     */
 
-    // Setter for location as "longitude,latitude" obtained from the user's device
-    public static void setLocation(String loc) {
-        locationString = loc;
+    public static void setLocationString(String str) {
+
+        locationString = str;
     }
 
     @Override
@@ -64,12 +67,12 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         HttpURLConnection urlConnection = null;
         String vetString = "";
 
-        String android_API_Key = getContext().getString(R.string.android_api_key);  // Not used yet
-        String browser_API_Key = getContext().getString(R.string.browser_api_key);
-        String server_API_Key = getContext().getString(R.string.server_api_key);
+        String android_API_Key = getContext().getString(R.string.api_key_sync_android);  // Not used yet
+        String browser_API_Key = getContext().getString(R.string.api_key_sync_browser);
+        String server_API_Key = getContext().getString(R.string.api_key_sync_server);
+
         String radius = "10000";  //  In meters
         String types = "veterinary_care";
-
         Uri builder = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?").buildUpon()
                 //  Required paramters
                 .appendQueryParameter("key", server_API_Key)
@@ -146,13 +149,13 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
 
     /**
      * Helper method to have the sync adapter sync immediately
-     * @param context The context used to access the account service
      */
-    public static void syncImmediately(Context context) {
+    public static void syncImmediately(Context cntxt) {
+        context = cntxt;
         Bundle bundle = new Bundle();
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
-        ContentResolver.requestSync(getSyncAccount(context),
+        ContentResolver.requestSync(getSyncAccount(),
                 context.getString(R.string.content_authority), bundle);
     }
 
@@ -160,11 +163,9 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
      * Helper method to get the fake account to be used with SyncAdapter, or make a new one
      * if the fake account doesn't exist yet.  If we make a new account, we call the
      * onAccountCreated method so we can initialize things.
-     *
-     * @param context The context used to access the account service
      * @return a fake account.
      */
-    public static Account getSyncAccount(Context context) {
+    public static Account getSyncAccount() {
         // Get an instance of the Android account manager
         AccountManager accountManager =
                 (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
@@ -220,8 +221,8 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
         String vetAddress = "";
         String vetPhone = "";
         String vetOpen = "false";
-        Double vetLatitude = 0.0;
-        Double vetLongitude = 0.0;
+        double vetLatitude = 0.0;
+        double vetLongitude = 0.0;
 
         try {
             JSONObject vetJSON = new JSONObject(vetJSONString);
@@ -254,10 +255,12 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
                 vetDataValues.put(VetsTable.COLUMN_VET_NAME, vetName);
                 vetDataValues.put(VetsTable.COLUMN_VET_ADDRESS, vetAddress);
                 vetDataValues.put(VetsTable.COLUMN_VET_PHONE, vetPhone);
-                if (vetOpen.equalsIgnoreCase("true"))
-                    vetDataValues.put(VetsTable.COLUMN_VET_OPEN, true);
+                if (vetOpen.equalsIgnoreCase(""))
+                    vetDataValues.put(VetsTable.COLUMN_VET_OPEN, 2);
+                else if (vetOpen.equalsIgnoreCase("true"))
+                    vetDataValues.put(VetsTable.COLUMN_VET_OPEN, 1);
                 else
-                    vetDataValues.put(VetsTable.COLUMN_VET_OPEN, false);
+                    vetDataValues.put(VetsTable.COLUMN_VET_OPEN, 0);
                 vetDataValues.put(VetsTable.COLUMN_VET_LATITUDE, vetLatitude);
                 vetDataValues.put(VetsTable.COLUMN_VET_LONGITUDE, vetLongitude);
                 boolean myVet = false;
@@ -267,11 +270,11 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
             }
 
             if (loaderVector.size() > 0) {
+                int rowsDeleted = getContext().getContentResolver().delete(VetsTable.CONTENT_URI, null, null);
                 ContentValues[] loaderArray = new ContentValues[loaderVector.size()];
                 loaderVector.toArray(loaderArray);
                 int rowsInserted = getContext().getContentResolver()
                         .bulkInsert(VetsTable.CONTENT_URI, loaderArray);
- Log.v(LOG_TAG, "inserted " + rowsInserted + " rows of vet data");
             }
         }
         catch (JSONException je) {
