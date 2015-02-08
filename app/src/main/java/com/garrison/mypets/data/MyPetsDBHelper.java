@@ -52,7 +52,7 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
                 VetsTable.COLUMN_VET_NAME     + " TEXT, " +
                 VetsTable.COLUMN_VET_ADDRESS    + " TEXT, " +
                 VetsTable.COLUMN_VET_PHONE  + " TEXT, " +
-                VetsTable.COLUMN_VET_OPEN      + " BOOLEAN, " +
+                VetsTable.COLUMN_VET_OPEN      + " INTEGER, " +
                 VetsTable.COLUMN_VET_LATITUDE      + " FLOAT, " +
                 VetsTable.COLUMN_VET_LONGITUDE      + " FLOAT, " +
                 VetsTable.COLUMN_VET_MY_VET     + " BOOLEAN); " ;

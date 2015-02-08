@@ -149,6 +149,8 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
                 return PetsEmergencyContactsTable.CONTENT_ITEM_TYPE;
             case EMERGENCY_CONTACTS_BY_LOOKUP_ID:
                 return PetsEmergencyContactsTable.CONTENT_ITEM_TYPE;
+            case VETS:
+                return VetsTable.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -214,7 +216,7 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-
+Log.v(LOG_TAG, " UPDATING ");
         final SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         final int myMatch = sUriMatcher.match(uri);
@@ -258,14 +260,14 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
         }
         if (numRows > 0)
             getContext().getContentResolver().notifyChange(uri, null);
-
+        Log.v(LOG_TAG, " UPDATING DONE ");
         return numRows;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int numRows = 0;
-
+ Log.v(LOG_TAG, " DELETEING ");
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         final int myMatch = sUriMatcher.match(uri);
@@ -300,58 +302,8 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
                 throw new UnsupportedOperationException("Unknown URI: " + uri);
 
         }
+        Log.v(LOG_TAG, " DELETEING DONE ");
         return numRows;
-    }
-
-    public int count(Uri uri) {
-
-        Cursor cursor = null;
-        SQLiteDatabase db = mDBHelper.getWritableDatabase();
-
-        final int myMatch = sUriMatcher.match(uri);
-        switch (myMatch) {
-            case PETS: {
-                try {
-                    cursor = db.query(
-                            PetTable.TABLE_NAME,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
-                    );
-
-                } catch (Exception dbEx) {
-                    Log.e(LOG_TAG, "We have a db error on delete: " + dbEx.getMessage());
-                } finally {
-                    db.close();
-                }
-                break;
-            }
-            case EMERGENCY_CONTACTS: {
-                try {
-                    cursor = db.query(
-                            PetsEmergencyContactsTable.TABLE_NAME,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null,
-                            null
-                    );
-                } catch (Exception dbEx) {
-                    Log.e(LOG_TAG, "We have a db error on delete: " + dbEx.getMessage());
-                } finally {
-                    db.close();
-                }
-                break;
-            }
-            default:
-                throw new UnsupportedOperationException("Unknown URI: " + uri);
-
-        }
-        return cursor.getCount();
     }
 
     public static UriMatcher buildUriMatcher(){
