@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -36,6 +38,10 @@ public class VetsMapActivity extends FragmentActivity implements OnMapReadyCallb
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_lightblue)));
 
         CameraPosition cameraPosition = googleMap.getCameraPosition();
+        LatLng latLng = new LatLng(latitude, longitude);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
+        googleMap.moveCamera(cameraUpdate);
+
     }
 
     public static GoogleMap getGoogleMap() {
@@ -46,11 +52,13 @@ public class VetsMapActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.vet_map_activity);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
+
 }
+
 
