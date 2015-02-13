@@ -104,6 +104,8 @@ public class MyPetsContract {
         // Vet business status
         public static final String COLUMN_VET_LONGITUDE = "longitude";
         // Vet business status
+        public static final String COLUMN_VET_DISTANCE_VALUE = "distanceValue";
+        // Vet business status
         public static final String COLUMN_VET_MY_VET = "myVet";
 
         //   Setters and getters for Content Provider Uri - Vets Table
