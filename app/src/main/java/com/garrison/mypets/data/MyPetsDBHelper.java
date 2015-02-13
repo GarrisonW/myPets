@@ -55,6 +55,7 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
                 VetsTable.COLUMN_VET_OPEN      + " INTEGER, " +
                 VetsTable.COLUMN_VET_LATITUDE      + " FLOAT, " +
                 VetsTable.COLUMN_VET_LONGITUDE      + " FLOAT, " +
+                VetsTable.COLUMN_VET_DISTANCE_VALUE + " FLOAT, " +
                 VetsTable.COLUMN_VET_MY_VET     + " BOOLEAN); " ;
 
         // Set up the location column as a foreign key to location table.
