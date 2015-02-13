@@ -7,9 +7,12 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.SyncResult;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.garrison.mypets.R;
@@ -37,7 +40,9 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
     private final String LOG_TAG = VetFinderSyncAdapter.class.getSimpleName();
 
     private static Context context = null;
-    private static String locationString = null;
+    private String locationString = null;
+    private double latitude = 0.0;
+    private double longitude = 0.0;
 
     BufferedReader reader = null;
 
@@ -55,14 +60,17 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
     }
     */
 
-    public static void setLocationString(String str) {
-
-        locationString = str;
-    }
-
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
         Log.d(LOG_TAG, "Starting sync");
+
+        //checking the last update and notify if it' the first of the day
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String latString = context.getString(R.string.pref_latitude);
+        String longString = context.getString(R.string.pref_longitude);
+        latitude = Double.longBitsToDouble(prefs.getLong(latString, 0));
+        longitude = Double.longBitsToDouble(prefs.getLong(longString, 0));
+        locationString = latitude + "," + longitude;
 
         HttpURLConnection urlConnection = null;
         String vetString = "";
@@ -98,7 +106,7 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
             urlConnection.connect();
             InputStream inputStream = urlConnection.getInputStream();
             if (inputStream == null) {
-                Log.v(LOG_TAG, "No data returned");// Nothing to do.
+                Log.v(LOG_TAG, "No data returned");
                 return;
             }
 
@@ -263,6 +271,7 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
                     vetDataValues.put(VetsTable.COLUMN_VET_OPEN, 0);
                 vetDataValues.put(VetsTable.COLUMN_VET_LATITUDE, vetLatitude);
                 vetDataValues.put(VetsTable.COLUMN_VET_LONGITUDE, vetLongitude);
+                vetDataValues.put(VetsTable.COLUMN_VET_DISTANCE_VALUE, distanceValue(vetLatitude, vetLongitude));
                 boolean myVet = false;
                 vetDataValues.put(VetsTable.COLUMN_VET_MY_VET, myVet);
 
@@ -270,16 +279,23 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
             }
 
             if (loaderVector.size() > 0) {
-                int rowsDeleted = getContext().getContentResolver().delete(VetsTable.CONTENT_URI, null, null);
+                int rowsDeleted = context.getContentResolver().delete(VetsTable.CONTENT_URI, null, null);
                 ContentValues[] loaderArray = new ContentValues[loaderVector.size()];
                 loaderVector.toArray(loaderArray);
-                int rowsInserted = getContext().getContentResolver()
+                int rowsInserted = context.getContentResolver()
                         .bulkInsert(VetsTable.CONTENT_URI, loaderArray);
             }
         }
         catch (JSONException je) {
             Log.e(LOG_TAG, je.getLocalizedMessage());
         }
-
     }
+
+    public float distanceValue(double lat, double lng) {
+        float results[] = {0,0,0};
+        Location.distanceBetween(latitude, longitude, lat, lng, results);
+
+        return results[0];
+    }
+
 }
