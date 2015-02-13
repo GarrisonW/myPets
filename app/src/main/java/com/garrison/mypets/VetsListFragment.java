@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.garrison.mypets.data.MyPetsContract;
 import com.garrison.mypets.data.MyPetsContract.VetsTable;
 
 /**
@@ -85,7 +84,7 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        Uri vetsUri = MyPetsContract.VetsTable.buildVetsUri();
+        Uri vetsUri = VetsTable.buildVetsUri();
 
         // Loads Cursor for list
         return new CursorLoader(
@@ -94,7 +93,7 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
                 VETS_TABLE_COLUMNS,
                 null,
                 null,
-                null
+                VetsTable.COLUMN_VET_DISTANCE_VALUE
         );
     }
 
