@@ -1,14 +1,18 @@
 package com.garrison.mypets;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,6 +24,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class VetsListViewAdapter  extends CursorAdapter {
     private final String LOG_TAG = VetsListViewAdapter.class.getSimpleName();
 
+    public GoogleMap googleMap;
+
     public VetsListViewAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -28,9 +34,29 @@ public class VetsListViewAdapter  extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+
+        googleMap = VetsMapActivity.getGoogleMap();
+
         View view = LayoutInflater.from(context).inflate(R.layout.vet_list_view, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
+
+        SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(context);
+        String lastLatString = context.getString(R.string.pref_latitude);
+        String lastLongString = context.getString(R.string.pref_longitude);
+        double latitude = Double.longBitsToDouble(sharedPreference.getLong(lastLatString, 0));
+        double longitude = Double.longBitsToDouble(sharedPreference.getLong(lastLongString, 0));
+        LatLng currentLocation = new LatLng(latitude, longitude);
+        googleMap.addMarker(new MarkerOptions()
+                .position(currentLocation)
+                .title("I am here")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_lightblue)));
+
+        float zoomLevel = 12;
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLocation, zoomLevel);
+        googleMap.moveCamera(cameraUpdate);
+        googleMap.getUiSettings().setTiltGesturesEnabled(false);
+
         return view;
     }
 
@@ -44,7 +70,6 @@ public class VetsListViewAdapter  extends CursorAdapter {
         String vetAddress = cursor.getString(VetsListFragment.ADAPTER_BINDER_COL_VET_ADDRESS);
         viewHolder.vetAddressView.setText(vetAddress);
 
-        GoogleMap googleMap = VetsMapActivity.getGoogleMap();
         double latitude = cursor.getDouble(VetsListFragment.ADAPTER_BINDER_COL_VET_LATITUDE);
         double longitude = cursor.getDouble(VetsListFragment.ADAPTER_BINDER_COL_VET_LONGITUDE);
         int open = cursor.getInt(VetsListFragment.ADAPTER_BINDER_COL_VET_OPEN);
