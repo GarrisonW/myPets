@@ -39,8 +39,9 @@ public class VetsMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         CameraPosition cameraPosition = googleMap.getCameraPosition();
         LatLng latLng = new LatLng(latitude, longitude);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
         googleMap.moveCamera(cameraUpdate);
+        googleMap.getUiSettings().setTiltGesturesEnabled(false);
 
     }
 
