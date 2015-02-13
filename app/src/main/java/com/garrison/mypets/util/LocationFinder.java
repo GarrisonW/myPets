@@ -1,20 +1,24 @@
 package com.garrison.mypets.util;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
+
+import com.garrison.mypets.R;
 
 /**
  * Created by Garrison on 1/22/2015.
  */
 public class LocationFinder {
 
-    public static String getLocationLongLatString(Context context) {
+    private static final String LOG_TAG = LocationFinder.class.getSimpleName();
 
-        String locationString = null;
-
+    public static void setLocation(Context context) {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
             }
@@ -38,20 +42,20 @@ public class LocationFinder {
             else if (gpsEnabled)
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             else {
-                // TODO: Notify that no service GPS or Network are available
+                // TODO:  No networks
+               Toast.makeText(context, "There is no connection available to retrieve vets", Toast.LENGTH_LONG).show();
             }
             Location loc = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             double longitude = loc.getLongitude();
             double latitude = loc.getLatitude();
-            locationString = latitude + "," + longitude;
-            System.out.println("LOCATION: " + locationString);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor prefsEditor = prefs.edit();
+            prefsEditor.putLong(context.getString(R.string.pref_latitude), Double.doubleToLongBits(latitude));
+            prefsEditor.putLong(context.getString(R.string.pref_longitude), Double.doubleToLongBits(longitude));
+            prefsEditor.commit();
 
-            if (networkEnabled)
-                System.out.println("Network enabled");
         } catch (SecurityException se) {
             // TODO:  Launch permissions were not granted dialog
         }
-        return locationString;
     }
-
 }
