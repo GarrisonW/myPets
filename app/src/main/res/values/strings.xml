@@ -58,9 +58,15 @@
     <string name="sync_account_type">garrison.mypets.com</string>
     <string name="content_authority">com.garrison.mypets</string>
 
-    <!-- Google API Keys (for sync-adapter authenticator) -->
-    <string name="server_api_key">AIzaSyBKc-I8XL5qI9lZady7D-fTtp0yZ652hww</string>
-    <string name="browser_api_key">AIzaSyBmOJLOl_H9p2biJlv2vO6XI0q0W27IICU</string>
-    <string name="android_api_key">AIzaSyBtrGGAYjubxG6y2WUXnIibIa_bE7ykaBs</string>
+    <string name="broadcast_vet_data">com.garrison.mypets.broadcast</string>
+    <string name="broadcast_vet_message">broadcast_vet_message</string>
+
+
+    <!-- Google Places API Keys -->
+    <string name="api_key_sync_server">AIzaSyBKc-I8XL5qI9lZady7D-fTtp0yZ652hww</string>
+    <string name="api_key_sync_browser">AIzaSyBmOJLOl_H9p2biJlv2vO6XI0q0W27IICU</string>
+    <string name="api_key_sync_android">AIzaSyCy5wOLJrRpcElXYuRA8YlFvZCYYpNCijQ</string>
+
+    <string name="api_key_maps">AIzaSyCy5wOLJrRpcElXYuRA8YlFvZCYYpNCijQ</string>
 
 </resources>
