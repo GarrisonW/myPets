@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/abc_ab_solid_dark_holo">
 
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
-    <fragment android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/vets_map"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"/>
-
-    <fragment android:name="com.garrison.mypets.VetsListFragment"
-        android:id="@+id/vets_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/vets_list"
+            android:name="com.garrison.mypets.VetsListFragment"
+            android:layout_weight="2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
 
 </LinearLayout>
