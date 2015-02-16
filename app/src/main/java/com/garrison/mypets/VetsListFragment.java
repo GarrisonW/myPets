@@ -21,7 +21,7 @@ import com.garrison.mypets.data.MyPetsContract.VetsTable;
 public class VetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG = VetsListFragment.class.getSimpleName();
-    private static final int CONTACTS_LOADER = 5;
+    private static final int VETS_LOADER = 5;
 
     private ListView mVetsListView = null;
     private VetsListViewAdapter mVetListViewAdapter = null;
@@ -56,14 +56,15 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(CONTACTS_LOADER, null, this);
+
+        getLoaderManager().initLoader(VETS_LOADER, null, this);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -78,7 +79,7 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
     @Override
     public void onResume() {
         super.onResume();
-        getLoaderManager().restartLoader(CONTACTS_LOADER, null, this);
+        getLoaderManager().restartLoader(VETS_LOADER, null, this);
     }
 
     @Override

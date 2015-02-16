@@ -69,7 +69,6 @@ public class VetsListViewAdapter  extends CursorAdapter {
                     .position(new LatLng(latitude, longitude))
                     .title(vetName)
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow)));
-;
     }
 
     //  Helper to reduce mapping

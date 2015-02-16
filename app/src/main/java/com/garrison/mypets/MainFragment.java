@@ -1,7 +1,9 @@
 package com.garrison.mypets;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,6 +42,9 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     private ListView petListView = null;
     private MainPetsListAdapter mMainPetsListAdapter = null;
 
+    double latitude = 0.0;
+    double longitude = 0.0;
+
     BufferedReader reader = null;
 
     TextView mPetCountTextView = null;
@@ -62,7 +69,6 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         super();
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -72,6 +78,9 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Context context = getActivity();
+        LocalBroadcastManager.getInstance(context).registerReceiver(mVetDataLoadReceiver,
+                new IntentFilter(context.getString(R.string.broadcast_vet_data)));
         setHasOptionsMenu(true);
     }
 
@@ -110,16 +119,11 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         findVetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = getActivity();
-                //  If the user location has changed (significantly) since loading the app, reload the data
-                boolean userMoved = LocationFinder.userLocationChanged(context);
-                //if (userMoved) {
-                  String locationString = LocationFinder.getLocationLongLatString(context);
-                  VetFinderSyncAdapter.setLocationString(locationString);
-                  VetFinderSyncAdapter.syncImmediately(context);
-                //}
-                Intent intent = new Intent(context, VetsMapActivity.class);
-                startActivity(intent);
+
+            Context context = getActivity();
+            LocationFinder.setLocation(context);
+            VetFinderSyncAdapter.syncImmediately(context);
+
             }
 
         });
@@ -148,6 +152,14 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onResume() {
         super.onResume();
         getLoaderManager().restartLoader(PET_LOADER, null, this);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        Context context = getActivity();
+        LocalBroadcastManager.getInstance(context).unregisterReceiver(mVetDataLoadReceiver);
+        super.onDestroy();
     }
 
     /**
@@ -197,5 +209,15 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         public void onItemSelected(int _ID);
     }
 
-
+    // handler for received Intents for the "my-event" event
+    private BroadcastReceiver mVetDataLoadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Extract data included in the Intent
+            String message = intent.getStringExtra(context.getString(R.string.broadcast_vet_message));
+            Intent intentMap = new Intent(context, VetsMapActivity.class);
+            startActivity(intentMap);
+Log.d(LOG_TAG, "Message received" + message);
+        }
+    };
 }

@@ -7,12 +7,14 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.garrison.mypets.R;
@@ -151,7 +153,7 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
         } catch (JSONException je) {
             Log.e(LOG_TAG, "JSON error: ", je);
         }
-
+sendBroadcastMessage("Sync completed");
         return;
     }
 
@@ -296,6 +298,15 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
         Location.distanceBetween(latitude, longitude, lat, lng, results);
 
         return results[0];
+    }
+
+    private void sendBroadcastMessage(String message) {
+
+Log.v(LOG_TAG, "SENDNG  Broadcast Message");
+        Intent intent = new Intent(context.getString(R.string.broadcast_vet_data));
+        // You can also include some extra data.
+        intent.putExtra(context.getString(R.string.broadcast_vet_message), message);
+        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
 }

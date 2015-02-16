@@ -3,7 +3,8 @@ package com.garrison.mypets;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,15 +19,42 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * Created by Garrison on 2/2/2015.
  */
-public class VetsMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class VetsMapActivity extends ActionBarActivity implements OnMapReadyCallback {
 
-    private final String LOG_TAG = VetsMapActivity.class.getSimpleName();
+    private static final String LOG_TAG = VetsMapActivity.class.getSimpleName();
 
     public static GoogleMap googleMap = null;
 
     @Override
     public void onMapReady(GoogleMap gMap) {
         googleMap = gMap;
+        initializeMap();
+    }
+
+    public static GoogleMap getGoogleMap() {
+        return googleMap;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (googleMap != null)
+            initializeMap();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.vet_map_activity);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.vets_map);
+        mapFragment.getMapAsync(this);
+    }
+
+    public void initializeMap() {
+
+Log.v(LOG_TAG, "INITIALIZING MAP");
         SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
         String lastLatString = getString(R.string.pref_latitude);
         String lastLongString = getString(R.string.pref_longitude);
@@ -39,27 +67,11 @@ public class VetsMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         CameraPosition cameraPosition = googleMap.getCameraPosition();
         LatLng latLng = new LatLng(latitude, longitude);
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 12);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
         googleMap.moveCamera(cameraUpdate);
         googleMap.getUiSettings().setTiltGesturesEnabled(false);
 
     }
-
-    public static GoogleMap getGoogleMap() {
-        return googleMap;
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.vet_map_activity);
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-    }
-
 }
 
 
