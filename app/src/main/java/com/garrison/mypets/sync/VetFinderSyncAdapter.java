@@ -39,6 +39,11 @@ import java.util.Vector;
  */
 public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
+    String android_API_Key = null;
+    String browser_API_Key = null;
+    String server_API_Key = null;
+    String key = null;
+
     private final String LOG_TAG = VetFinderSyncAdapter.class.getSimpleName();
 
     private static Context context = null;
@@ -77,26 +82,29 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         HttpURLConnection urlConnection = null;
         String vetString = "";
 
-        String android_API_Key = getContext().getString(R.string.api_key_sync_android);  // Not used yet
-        String browser_API_Key = getContext().getString(R.string.api_key_sync_browser);
-        String server_API_Key = getContext().getString(R.string.api_key_sync_server);
+        android_API_Key = getContext().getString(R.string.api_key_sync_android);  // Not used yet
+        browser_API_Key = getContext().getString(R.string.api_key_sync_browser);
+        server_API_Key = getContext().getString(R.string.api_key_sync_server);
+
+        key = server_API_Key;
 
         String radius = "10000";  //  In meters
         String types = "veterinary_care";
         Uri builder = Uri.parse("https://maps.googleapis.com/maps/api/place/nearbysearch/json?").buildUpon()
                 //  Required paramters
-                .appendQueryParameter("key", server_API_Key)
+                .appendQueryParameter("key", key)
                 .appendQueryParameter("location", locationString)
                 .appendQueryParameter("radius", radius)
                 //  Optional parameters
                 .appendQueryParameter("types", types)
                 .build();
-Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
+
         URL vetsURL = null;
         try {
             vetsURL = new URL(builder.toString());
         }
         catch (MalformedURLException mue) {
+            sendBroadcastMessage("URL is Malformed");
             Log.e(LOG_TAG, "URL is Malformed: " + builder.toString());
             return;
         }
@@ -108,6 +116,7 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
             urlConnection.connect();
             InputStream inputStream = urlConnection.getInputStream();
             if (inputStream == null) {
+                sendBroadcastMessage("No data returned");
                 Log.v(LOG_TAG, "No data returned");
                 return;
             }
@@ -128,6 +137,7 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
 
             Log.v(LOG_TAG, "VET STRING: " + vetString);
             if (buffer.length() == 0) {
+                sendBroadcastMessage("Empty String");
                 Log.e(LOG_TAG, "Empty String");
                 return;
             }
@@ -142,7 +152,9 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
                 try {
                     reader.close();
                 } catch (final IOException e) {
+                    sendBroadcastMessage("Error closing stream");
                     Log.e(LOG_TAG, "Error closing stream", e);
+                    return;
                 }
             }
         }
@@ -153,7 +165,8 @@ Log.v(LOG_TAG, "GARRISON URL: " + builder.toString());
         } catch (JSONException je) {
             Log.e(LOG_TAG, "JSON error: ", je);
         }
-sendBroadcastMessage("Sync completed");
+
+        sendBroadcastMessage("Sync completed");
         return;
     }
 
@@ -213,6 +226,7 @@ sendBroadcastMessage("Sync completed");
         JSONArray vetsArray;
 
         final String VETS_RESULT_OBJECT = "results";
+        final String VETS_PLACE_ID = "place_id";
         final String VETS_NAME = "name";
         final String VETS_GEO_OBJECT = "geometry";
         final String VETS_LOCATION_OBJECT = "location";
@@ -228,6 +242,7 @@ sendBroadcastMessage("Sync completed");
         JSONObject vetsOpenHoursObject = null;
 
         String vetName = "";
+        String vetPlaceID = "";
         String vetAddress = "";
         String vetPhone = "";
         String vetOpen = "false";
@@ -241,6 +256,7 @@ sendBroadcastMessage("Sync completed");
             Vector<ContentValues> loaderVector = new Vector<ContentValues>(vetsArray.length());
 
             for(int i = 0; i < vetsArray.length(); i++) {
+                vetPlaceID = "";
                 vetName = "";
                 vetAddress = "";
                 vetPhone = "";
@@ -250,6 +266,7 @@ sendBroadcastMessage("Sync completed");
 
                 ContentValues vetDataValues = new ContentValues();
                 resultsObject = vetsArray.getJSONObject(i);
+                vetPlaceID = resultsObject.getString(VETS_PLACE_ID);
                 vetName = resultsObject.getString(VETS_NAME);
                 vetAddress = resultsObject.getString(VETS_ADDRESS);
                 // vetPhone = ???????
@@ -262,6 +279,7 @@ sendBroadcastMessage("Sync completed");
                     vetOpen = vetsOpenHoursObject.getString(VETS_OPEN);
                 }
 
+                vetDataValues.put(VetsTable.COLUMN_VET_PLACE_ID, vetPlaceID);
                 vetDataValues.put(VetsTable.COLUMN_VET_NAME, vetName);
                 vetDataValues.put(VetsTable.COLUMN_VET_ADDRESS, vetAddress);
                 vetDataValues.put(VetsTable.COLUMN_VET_PHONE, vetPhone);
@@ -276,6 +294,8 @@ sendBroadcastMessage("Sync completed");
                 vetDataValues.put(VetsTable.COLUMN_VET_DISTANCE_VALUE, distanceValue(vetLatitude, vetLongitude));
                 boolean myVet = false;
                 vetDataValues.put(VetsTable.COLUMN_VET_MY_VET, myVet);
+
+                getVetDetails(vetDataValues, vetPlaceID);
 
                 loaderVector.add(vetDataValues);
             }
@@ -301,12 +321,71 @@ sendBroadcastMessage("Sync completed");
     }
 
     private void sendBroadcastMessage(String message) {
-
-Log.v(LOG_TAG, "SENDNG  Broadcast Message");
         Intent intent = new Intent(context.getString(R.string.broadcast_vet_data));
         // You can also include some extra data.
         intent.putExtra(context.getString(R.string.broadcast_vet_message), message);
         LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
     }
 
+    private void getVetDetails(ContentValues vetDataValues, String vetPlaceID) {
+
+        HttpURLConnection detailURLConnection = null;
+        String vetDetailString = "";
+
+        final String VETS_PHONE_NUMBER = "formatted_phone_number";
+        final String VET_RESULTS = "result";
+
+        String radius = "10000";  //  In meters
+        String types = "veterinary_care";
+        Uri builder = Uri.parse("https://maps.googleapis.com/maps/api/place/details/json?").buildUpon()
+                .appendQueryParameter("placeid", vetPlaceID)
+                .appendQueryParameter("key", key)
+                .build();
+
+        URL vetsDetailURL = null;
+        try {
+            vetsDetailURL = new URL(builder.toString());
+        } catch (MalformedURLException mue) {
+            Log.e(LOG_TAG, "URL is Malformed: " + builder.toString());
+            return;
+        }
+
+        try {
+            // Open the connection
+            detailURLConnection = (HttpURLConnection) vetsDetailURL.openConnection();
+            detailURLConnection.setRequestMethod("GET");
+            detailURLConnection.connect();
+            InputStream inputStream = detailURLConnection.getInputStream();
+            if (inputStream == null) {
+                Log.v(LOG_TAG, "No vet details returned");
+                return;
+            }
+
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+
+            StringBuffer buffer = new StringBuffer();
+            // Read the input stream into a String
+            String line;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line + "\n");
+            }
+            vetDetailString = buffer.toString();
+
+            if (buffer.length() == 0) {
+                Log.e(LOG_TAG, "Empty String");
+                return;
+            }
+        } catch (IOException ioe) {
+            Log.e(LOG_TAG, "MYPETS IO ERROR: " + ioe.getMessage());
+        }
+
+        try {
+            JSONObject vetDetailJSON = new JSONObject(vetDetailString);
+            JSONObject vetResults = vetDetailJSON.getJSONObject(VET_RESULTS);
+            String vetPhoneNumber = vetResults.getString(VETS_PHONE_NUMBER);
+            vetDataValues.put(VetsTable.COLUMN_VET_PHONE, vetPhoneNumber);
+        } catch (JSONException je) {
+            Log.e(LOG_TAG, je.getLocalizedMessage());
+        }
+    }
 }
