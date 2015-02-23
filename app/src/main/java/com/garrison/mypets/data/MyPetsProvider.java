@@ -54,7 +54,7 @@ public class MyPetsProvider extends ContentProvider {
     public boolean onCreate() {
 
        //CLEAR DATABASE FOR TESTING:
-getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
+//getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
         mDBHelper = new MyPetsDBHelper(getContext());
         return true;
     }
@@ -216,7 +216,7 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
 
     @Override
     public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
-Log.v(LOG_TAG, " UPDATING ");
+
         final SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         final int myMatch = sUriMatcher.match(uri);
@@ -267,7 +267,7 @@ Log.v(LOG_TAG, " UPDATING ");
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int numRows = 0;
- Log.v(LOG_TAG, " DELETEING ");
+
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         final int myMatch = sUriMatcher.match(uri);

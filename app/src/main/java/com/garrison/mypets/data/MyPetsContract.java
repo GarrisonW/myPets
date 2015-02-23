@@ -82,7 +82,6 @@ public class MyPetsContract {
         }
     }
 
-
     public static final class VetsTable implements BaseColumns {
 
         public static Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_VETS).build();
@@ -91,6 +90,8 @@ public class MyPetsContract {
 
         public static final String TABLE_NAME = "vets";
 
+        // Vet Google place id
+        public static final String COLUMN_VET_PLACE_ID = "vetPlaceID";
         // Vet name
         public static final String COLUMN_VET_NAME = "vetName";
         // Vet address

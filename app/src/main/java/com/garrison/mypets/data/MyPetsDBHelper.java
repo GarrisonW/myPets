@@ -49,6 +49,7 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
 
         final String SQL_CREATE_VETS_TABLE = "CREATE TABLE " + VetsTable.TABLE_NAME + " (" +
                 VetsTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                VetsTable.COLUMN_VET_PLACE_ID + " TEXT, " +
                 VetsTable.COLUMN_VET_NAME     + " TEXT, " +
                 VetsTable.COLUMN_VET_ADDRESS    + " TEXT, " +
                 VetsTable.COLUMN_VET_PHONE  + " TEXT, " +
