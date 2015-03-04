@@ -7,6 +7,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.garrison.mypets.R;
@@ -56,6 +57,7 @@ public class LocationFinder {
 
         } catch (SecurityException se) {
             // TODO:  Launch permissions were not granted dialog
+            Log.v(LOG_TAG, "Location services not available");
         }
     }
 }

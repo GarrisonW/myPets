@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,14 +11,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by Garrison on 2/2/2015.
  */
-public class VetsMapActivity extends ActionBarActivity implements OnMapReadyCallback {
+public class VetsMapActivity extends ActionBarActivity implements OnMapReadyCallback  {
 
     private static final String LOG_TAG = VetsMapActivity.class.getSimpleName();
 
@@ -50,11 +48,11 @@ public class VetsMapActivity extends ActionBarActivity implements OnMapReadyCall
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.vets_map);
         mapFragment.getMapAsync(this);
+
     }
 
     public void initializeMap() {
 
-Log.v(LOG_TAG, "INITIALIZING MAP");
         SharedPreferences sharedPreference = PreferenceManager.getDefaultSharedPreferences(this);
         String lastLatString = getString(R.string.pref_latitude);
         String lastLongString = getString(R.string.pref_longitude);
@@ -62,16 +60,16 @@ Log.v(LOG_TAG, "INITIALIZING MAP");
         double longitude = Double.longBitsToDouble(sharedPreference.getLong(lastLongString, 0));
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(latitude, longitude))
-                .title("I am here")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_lightblue)));
+                .title(getApplicationContext().getString(R.string.text_here))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_lightblue_dot)));
 
-        CameraPosition cameraPosition = googleMap.getCameraPosition();
         LatLng latLng = new LatLng(latitude, longitude);
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 13);
         googleMap.moveCamera(cameraUpdate);
         googleMap.getUiSettings().setTiltGesturesEnabled(false);
 
     }
+
 }
 
 

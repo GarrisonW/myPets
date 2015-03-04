@@ -4,12 +4,64 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
     android:background="@drawable/abc_ab_solid_dark_holo">
 
     <fragment android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/vets_map"
         android:layout_width="match_parent"
-        android:layout_height="320dp"/>
+        android:layout_height="270dp"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/abc_ab_solid_dark_holo">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/circle_green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/text_open"
+            android:textColor="@color/mypets_text"
+            android:textAppearance="@android:style/TextAppearance.Small"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/circle_red"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/text_closed"
+            android:textColor="@color/mypets_text"
+            android:textAppearance="@android:style/TextAppearance.Small"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/circle_yellow"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:text="@string/text_unknown"
+            android:textColor="@color/mypets_text"
+            android:textAppearance="@android:style/TextAppearance.Small"/>
+    </LinearLayout>
 
     <fragment android:name="com.garrison.mypets.VetsListFragment"
         android:id="@+id/vets_list"

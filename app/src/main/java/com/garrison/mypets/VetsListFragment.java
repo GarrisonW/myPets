@@ -1,6 +1,8 @@
 package com.garrison.mypets;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +20,7 @@ import com.garrison.mypets.data.MyPetsContract.VetsTable;
 /**
  * Created by Garrison on 2/5/2015.
  */
-public class VetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class VetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, VetsListViewAdapter.Callback {
 
     private final String LOG_TAG = VetsListFragment.class.getSimpleName();
     private static final int VETS_LOADER = 5;
@@ -30,6 +32,7 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
     private static final String[] VETS_TABLE_COLUMNS = {
             // ID is fully qualified because of later joins
             VetsTable.TABLE_NAME + "." + VetsTable._ID,
+            VetsTable.COLUMN_VET_PLACE_ID,
             VetsTable.COLUMN_VET_NAME,
             VetsTable.COLUMN_VET_ADDRESS,
             VetsTable.COLUMN_VET_PHONE,
@@ -40,14 +43,15 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
     };
 
     // These indices are to be bound (in the adapter) to PET_COLUMNS above.
-    public static final int ADAPTER_BINDER_COL_VETS_CONTACT_ID = 0;
-    public static final int ADAPTER_BINDER_COL_VET_NAME = 1;
-    public static final int ADAPTER_BINDER_COL_VET_ADDRESS = 2;
-    public static final int ADAPTER_BINDER_COL_VET_PHONE = 3;
-    public static final int ADAPTER_BINDER_COL_VET_LATITUDE = 4;
-    public static final int ADAPTER_BINDER_COL_VET_LONGITUDE = 5;
-    public static final int ADAPTER_BINDER_COL_VET_OPEN = 6;
-    public static final int ADAPTER_BINDER_COL_VET_MY_VET = 7;
+    public static final int ADAPTER_BINDER_COL_VETS_ID = 0;
+    public static final int ADAPTER_BINDER_COL_VETS_PLACE_ID = 1;
+    public static final int ADAPTER_BINDER_COL_VET_NAME = 2;
+    public static final int ADAPTER_BINDER_COL_VET_ADDRESS = 3;
+    public static final int ADAPTER_BINDER_COL_VET_PHONE = 4;
+    public static final int ADAPTER_BINDER_COL_VET_LATITUDE = 5;
+    public static final int ADAPTER_BINDER_COL_VET_LONGITUDE = 6;
+    public static final int ADAPTER_BINDER_COL_VET_OPEN = 7;
+    public static final int ADAPTER_BINDER_COL_VET_MY_VET = 8;
 
     public VetsListFragment() {
         super();
@@ -69,9 +73,17 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.vet_list_fragment, container, false);
+
+
         mVetListViewAdapter = new VetsListViewAdapter(getActivity(), null, 0);
         mVetsListView = (ListView) rootView.findViewById(android.R.id.list);
         mVetsListView.setAdapter(mVetListViewAdapter);
+        mVetListViewAdapter.setFragment(this);
+        mVetListViewAdapter.setListView(mVetsListView);
+
+
+        PaintDrawable div = new PaintDrawable(R.drawable.divider);
+        mVetsListView.setDivider(div);
 
         return rootView;
     }
@@ -108,4 +120,11 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
         mVetListViewAdapter.swapCursor(null);
     }
 
+    @Override
+    public void phoneVet(String vetNumber) {
+
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + vetNumber));
+        startActivity(intent);
+    }
 }

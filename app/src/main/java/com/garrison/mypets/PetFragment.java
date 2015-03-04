@@ -94,6 +94,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(PET_FRAGMENT_LOADER, null, this);
+
     }
 
     @Override
@@ -318,6 +319,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
         if (data != null) {
             data.moveToFirst();
             String petName = data.getString(data.getColumnIndex(PetTable.COLUMN_PET_NAME));
+            getActivity().setTitle(petName);
             int petSpeciesPos = data.getInt(data.getColumnIndex(PetTable.COLUMN_SPECIES_POS));
             String petDiet = data.getString(data.getColumnIndex(PetTable.COLUMN_DIET));
             int petFrequencyPos = data.getInt(data.getColumnIndex(PetTable.COLUMN_DIET_FREQUENCY_POS));

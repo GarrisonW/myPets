@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.garrison.mypets.data.MyPetsContract.PetTable;
@@ -39,15 +39,18 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     private static final int PET_LOADER = 0;
 
     private int numberOfPets = -1;
-    private ListView petListView = null;
-    private MainPetsListAdapter mMainPetsListAdapter = null;
+    public ListView mPetListView = null;
+    public MainPetsListAdapter mMainPetsListAdapter = null;
+
+    public Button mFindVetButton = null;
+    public Button mEmergencyContactsButton = null;
+    public ProgressBar mProgressSpinner = null;
+    public TextView mPetCountTextView = null;
 
     double latitude = 0.0;
     double longitude = 0.0;
 
     BufferedReader reader = null;
-
-    TextView mPetCountTextView = null;
 
     private static final String[] PETS_TABLE_COLUMNS = {
             PetTable.TABLE_NAME + "." + PetTable._ID,
@@ -88,12 +91,15 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.main_fragment, container, false);
 
+        mProgressSpinner = (ProgressBar) rootView.findViewById(R.id.progress_vet_data);
+        mProgressSpinner.setVisibility(View.GONE);
+
         mMainPetsListAdapter = new MainPetsListAdapter(getActivity(), null, 0);
 
         mPetCountTextView = (TextView) rootView.findViewById(R.id.num_pets_summary);
 
-        Button emergencyContactsPicker = (Button) rootView.findViewById(R.id.button_emergency_contacts);
-        emergencyContactsPicker.setOnClickListener(new View.OnClickListener() {
+        mEmergencyContactsButton = (Button) rootView.findViewById(R.id.button_emergency_contacts);
+        mEmergencyContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ContactsActivity.class);
@@ -102,10 +108,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
         });
 
-        petListView = (ListView) rootView.findViewById(R.id.listview_pets);
-        petListView.setAdapter(mMainPetsListAdapter);
+        mPetListView = (ListView) rootView.findViewById(R.id.listview_pets);
+        mPetListView.setAdapter(mMainPetsListAdapter);
 
-        petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mPetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Cursor cursor = mMainPetsListAdapter.getCursor();
@@ -115,12 +121,18 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             }
         });
 
-        Button findVetButton = (Button) rootView.findViewById(R.id.button_find_vet);
-        findVetButton.setOnClickListener(new View.OnClickListener() {
+        mFindVetButton = (Button) rootView.findViewById(R.id.button_find_vet);
+        mFindVetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             Context context = getActivity();
+
+            mProgressSpinner.setVisibility(View.VISIBLE);
+            mFindVetButton.setVisibility(View.GONE);
+            mPetCountTextView.setVisibility(View.GONE);
+            mPetListView.setVisibility(View.GONE);
+            mEmergencyContactsButton.setVisibility(View.GONE);
             LocationFinder.setLocation(context);
             VetFinderSyncAdapter.syncImmediately(context);
 
@@ -151,6 +163,11 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     @Override
     public void onResume() {
         super.onResume();
+        mProgressSpinner.setVisibility(View.GONE);
+        mFindVetButton.setVisibility(View.VISIBLE);
+        mPetCountTextView.setVisibility(View.VISIBLE);
+        mPetListView.setVisibility(View.VISIBLE);
+        mEmergencyContactsButton.setVisibility(View.VISIBLE);
         getLoaderManager().restartLoader(PET_LOADER, null, this);
 
     }
@@ -217,7 +234,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             String message = intent.getStringExtra(context.getString(R.string.broadcast_vet_message));
             Intent intentMap = new Intent(context, VetsMapActivity.class);
             startActivity(intentMap);
-Log.d(LOG_TAG, "Message received" + message);
+
         }
     };
 }
