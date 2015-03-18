@@ -1,7 +1,9 @@
 package com.garrison.mypets;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -126,16 +128,28 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             @Override
             public void onClick(View view) {
 
-            Context context = getActivity();
+                Context context = getActivity();
 
-            mProgressSpinner.setVisibility(View.VISIBLE);
-            mFindVetButton.setVisibility(View.GONE);
-            mPetCountTextView.setVisibility(View.GONE);
-            mPetListView.setVisibility(View.GONE);
-            mEmergencyContactsButton.setVisibility(View.GONE);
-            LocationFinder.setLocation(context);
-            VetFinderSyncAdapter.syncImmediately(context);
+                int result = LocationFinder.setLocation(context);
 
+                if (result == LocationFinder.LOCATION_FINDER_OK) {
+                    mProgressSpinner.setVisibility(View.VISIBLE);
+                    mFindVetButton.setVisibility(View.GONE);
+                    mPetCountTextView.setVisibility(View.GONE);
+                    mPetListView.setVisibility(View.GONE);
+                    mEmergencyContactsButton.setVisibility(View.GONE);
+
+                    VetFinderSyncAdapter.syncImmediately(context);
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.service_not_available)
+                            .setNeutralButton(R.string.okay, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    // Create the AlertDialog object and return it
+                    builder.create().show();
+                }
             }
 
         });
