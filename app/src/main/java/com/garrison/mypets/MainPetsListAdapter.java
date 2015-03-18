@@ -39,6 +39,7 @@ public class MainPetsListAdapter extends CursorAdapter {
         ViewHolder viewHolder = (ViewHolder)view.getTag();
 
         String avatarUri = cursor.getString(MainFragment.ADAPTER_BINDER_COL_AVATAR);
+
         if (avatarUri != null) {
             mAvatarUri = Uri.parse(avatarUri);
             Bitmap sizedBitmap = ImageHandler.resizeImage(context, avatarUri, 25, 25);
