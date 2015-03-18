@@ -69,7 +69,6 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
     @Override
     public void onPerformSync(Account account, Bundle bundle, String s, ContentProviderClient contentProviderClient, SyncResult syncResult) {
-        Log.d(LOG_TAG, "Starting sync");
 
         //checking the last update and notify if it' the first of the day
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -135,7 +134,6 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
             }
             vetString = buffer.toString();
 
-            Log.v(LOG_TAG, "VET STRING: " + vetString);
             if (buffer.length() == 0) {
                 sendBroadcastMessage("Empty String");
                 Log.e(LOG_TAG, "Empty String");
