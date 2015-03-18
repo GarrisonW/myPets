@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 
 /**
  * Created by Garrison on 11/22/2014.
@@ -21,7 +20,6 @@ public class ConfirmDialog extends DialogFragment {
         builder.setMessage(R.string.remove)
                 .setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.v("RIGHT HERE", "OKAY SO FAR");
                         petFragment = (PetFragment) getTargetFragment();
                         petFragment.removePet();
                     }
