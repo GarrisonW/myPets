@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,6 @@ public class VetsListViewAdapter extends CursorAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.vet_list_view, viewGroup, false);
         final ViewHolder viewHolder = new ViewHolder(view);
         view.setTag(viewHolder);
-
 
         TextView vetName = viewHolder.vetNameView;
         vetName.setFocusable(false);
@@ -215,6 +215,12 @@ public class VetsListViewAdapter extends CursorAdapter {
         }
 
         mVetsListView.setSelection(position);
+
+        View vetListView = mVetsListView.getSelectedView();
+        if (vetListView == null) Log.v(LOG_TAG, "NULL VIEW DAMMIT");
+        //TextView vetNameView = (TextView) vetListView.findViewById(R.id.list_vet_name);
+//Log.v(LOG_TAG, "VET NAME TO COLOR: "  + vetNameView.getText());
+        //vetNameView.setTextColor(mContext.getResources().getColor(R.color.mypets_yellow));
 
         marker.showInfoWindow();
 
