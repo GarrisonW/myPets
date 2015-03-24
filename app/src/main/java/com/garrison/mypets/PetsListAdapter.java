@@ -16,11 +16,11 @@ import com.garrison.mypets.util.ImageHandler;
 /**
  * Created by Garrison on 10/4/2014.
  */
-public class MainPetsListAdapter extends CursorAdapter {
+public class PetsListAdapter extends CursorAdapter {
 
-    private final String LOG_TAG = MainPetsListAdapter.class.getSimpleName();
+    private final String LOG_TAG = PetsListAdapter.class.getSimpleName();
 
-    public MainPetsListAdapter(Context context, Cursor c, int flags) {
+    public PetsListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
