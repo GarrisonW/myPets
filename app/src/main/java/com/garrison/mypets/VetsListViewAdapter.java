@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +40,9 @@ public class VetsListViewAdapter extends CursorAdapter {
 
     Cursor mCursor = null;
     Marker mMarker = null;
-
     public VetsListViewAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
+        mContext = context;
         mCursor = c;
     }
 
@@ -82,7 +81,6 @@ public class VetsListViewAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 int pos = mVetsListView.getPositionForView(view);
-                Cursor cursor = (Cursor)mVetsListView.getItemAtPosition(pos);
                 isolateVet(null, pos);
             }
         });
@@ -91,7 +89,6 @@ public class VetsListViewAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 int pos = mVetsListView.getPositionForView(view);
-                Cursor cursor = (Cursor)mVetsListView.getItemAtPosition(pos);
                 isolateVet(null, pos);
             }
         });
@@ -110,7 +107,6 @@ public class VetsListViewAdapter extends CursorAdapter {
             @Override
             public void onClick(View view) {
                 int pos = mVetsListView.getPositionForView(view);
-                Cursor cursor = (Cursor)mVetsListView.getItemAtPosition(pos);
                 isolateVet(null, pos);
             }
         });
@@ -216,12 +212,6 @@ public class VetsListViewAdapter extends CursorAdapter {
 
         mVetsListView.setSelection(position);
 
-        View vetListView = mVetsListView.getSelectedView();
-        if (vetListView == null) Log.v(LOG_TAG, "NULL VIEW DAMMIT");
-        //TextView vetNameView = (TextView) vetListView.findViewById(R.id.list_vet_name);
-//Log.v(LOG_TAG, "VET NAME TO COLOR: "  + vetNameView.getText());
-        //vetNameView.setTextColor(mContext.getResources().getColor(R.color.mypets_yellow));
-
         marker.showInfoWindow();
 
         double latitude = cursor.getDouble(VetsListFragment.ADAPTER_BINDER_COL_VET_LATITUDE);
@@ -233,6 +223,9 @@ public class VetsListViewAdapter extends CursorAdapter {
 
         previousMarker = marker;
         previousCursor = cursor;
+
+        notifyDataSetChanged();
+
     }
 
     public interface Callback {

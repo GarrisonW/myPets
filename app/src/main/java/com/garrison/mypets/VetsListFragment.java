@@ -74,7 +74,6 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
 
         View rootView = inflater.inflate(R.layout.vet_list_fragment, container, false);
 
-
         mVetListViewAdapter = new VetsListViewAdapter(getActivity(), null, 0);
         mVetsListView = (ListView) rootView.findViewById(android.R.id.list);
         mVetsListView.setAdapter(mVetListViewAdapter);
