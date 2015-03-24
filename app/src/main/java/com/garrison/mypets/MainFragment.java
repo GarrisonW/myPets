@@ -42,7 +42,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private int numberOfPets = -1;
     public ListView mPetListView = null;
-    public MainPetsListAdapter mMainPetsListAdapter = null;
+    public PetsListAdapter mPetsListAdapter = null;
 
     public Button mFindVetButton = null;
     public Button mEmergencyContactsButton = null;
@@ -96,7 +96,7 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         mProgressSpinner = (ProgressBar) rootView.findViewById(R.id.progress_vet_data);
         mProgressSpinner.setVisibility(View.GONE);
 
-        mMainPetsListAdapter = new MainPetsListAdapter(getActivity(), null, 0);
+        mPetsListAdapter = new PetsListAdapter(getActivity(), null, 0);
 
         mPetCountTextView = (TextView) rootView.findViewById(R.id.num_pets_summary);
 
@@ -111,12 +111,12 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         });
 
         mPetListView = (ListView) rootView.findViewById(R.id.listview_pets);
-        mPetListView.setAdapter(mMainPetsListAdapter);
+        mPetListView.setAdapter(mPetsListAdapter);
 
         mPetListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Cursor cursor = mMainPetsListAdapter.getCursor();
+                Cursor cursor = mPetsListAdapter.getCursor();
                 if (cursor != null && cursor.moveToPosition(i)) {
                     ((Callback) getActivity()).onItemSelected(cursor.getInt(ADAPTER_BINDER_COL_PET_ID));
                 }
@@ -226,13 +226,13 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         else
             formattedPetCount = context.getString(R.string.formatted_pet_count, numberOfPets);
         mPetCountTextView.setText(formattedPetCount);
-        mMainPetsListAdapter.swapCursor(data);
+        mPetsListAdapter.swapCursor(data);
     }
 
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mMainPetsListAdapter.swapCursor(null);
+        mPetsListAdapter.swapCursor(null);
     }
 
     public interface Callback {
