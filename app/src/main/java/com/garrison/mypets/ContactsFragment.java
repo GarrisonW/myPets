@@ -128,12 +128,10 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
         Cursor cursor = (Cursor) mContactsListView.getItemAtPosition(pos);
         int _ID = cursor.getInt(ADAPTER_BINDER_COL_EMER_CONTACT_ID);
-        Uri clearUri = PetsEmergencyContactsTable.buildEmergencyContactUri(_ID);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-        //shareIntent.setType("text/plain");
         shareIntent.setType("message/rfc822");
 
         String emailAddress = cursor.getString(ADAPTER_BINDER_COL_EMER_CONTACT_EMAIL);
