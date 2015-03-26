@@ -59,7 +59,12 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             PetTable.COLUMN_PET_NAME,
             PetTable.COLUMN_SPECIES_POS,
             PetTable.COLUMN_SPECIES_TEXT,
+            PetTable.COLUMN_BREED,
+            PetTable.COLUMN_COLOR_POS,
+            PetTable.COLUMN_COLOR_TEXT,
             PetTable.COLUMN_MICROCHIP,
+            PetTable.COLUMN_MEDS_FREE_TEXT,
+            PetTable.COLUMN_OTHER_FREE_TEXT,
             PetTable.COLUMN_AVATAR_URI
     };
 
@@ -67,8 +72,13 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     public static final int ADAPTER_BINDER_COL_PET_NAME = 1;
     public static final int ADAPTER_BINDER_COL_SPECIES_POS = 2;
     public static final int ADAPTER_BINDER_COL_SPECIES_TEXT = 3;
-    public static final int ADAPTER_BINDER_COL_MICROCHIP = 4;
-    public static final int ADAPTER_BINDER_COL_AVATAR = 5;
+    public static final int ADAPTER_BINDER_COL_BREED = 4;
+    public static final int ADAPTER_BINDER_COL_COLOR_POS = 5;
+    public static final int ADAPTER_BINDER_COL_COLOR_TEXT = 6;
+    public static final int ADAPTER_BINDER_COL_MICROCHIP = 7;
+    public static final int ADAPTER_BINDER_COL_MEDS_FREE_TEXT = 8;
+    public static final int ADAPTER_BINDER_COL_OTHER_FREE_TEXT = 9;
+    public static final int ADAPTER_BINDER_COL_AVATAR = 10;
 
     public MainFragment() {
         super();

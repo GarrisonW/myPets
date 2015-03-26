@@ -34,9 +34,14 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
                 PetTable.COLUMN_PET_NAME           + " TEXT NOT NULL, " +
                 PetTable.COLUMN_SPECIES_POS        + " INTEGER NOT NULL, " +
                 PetTable.COLUMN_SPECIES_TEXT       + " TEXT NOT NULL, " +
+                PetTable.COLUMN_BREED              + " TEXT, " +
+                PetTable.COLUMN_COLOR_POS          + " INTEGER, " +
+                PetTable.COLUMN_COLOR_TEXT         + " TEXT, " +
                 PetTable.COLUMN_DIET               + " TEXT, " +
                 PetTable.COLUMN_DIET_FREQUENCY_POS + " INTEGER, " +
+                PetTable.COLUMN_MEDS_FREE_TEXT     + " TEXT, " +
                 PetTable.COLUMN_MICROCHIP          + " TEXT, " +
+                PetTable.COLUMN_OTHER_FREE_TEXT    + " TEXT, " +
                 PetTable.COLUMN_AVATAR_URI         + " TEXT); ";
 
         final String SQL_CREATE_EMERGENCY_CONTACTS_TABLE = "CREATE TABLE " + PetsEmergencyContactsTable.TABLE_NAME + " (" +

@@ -21,7 +21,7 @@
 
     <Button
         android:layout_width="250dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:id="@+id/button_find_vet"
         android:text="@string/button_find_vet"
         android:layout_gravity="center_horizontal"
@@ -47,7 +47,9 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="189dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:id="@+id/listview_pets" />
 
     <ProgressBar

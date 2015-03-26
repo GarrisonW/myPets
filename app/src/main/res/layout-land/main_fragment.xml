@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/abc_ab_solid_dark_holo">
+
+    <ProgressBar
+        android:id="@+id/progress_vet_data"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_gravity="center"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:layout_margin="15dp"
+        android:background="@drawable/abc_ab_solid_dark_holo">
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:id="@+id/button_emergency_contacts"
+            android:text="@string/button_emergency_contacts"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:hint="@string/emergency_contacts"
+            android:textColor="@color/mypets_yellow"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:background="@color/mypets_tan" />
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:id="@+id/button_find_vet"
+            android:text="@string/button_find_vet"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:hint="@string/button_find_vet"
+            android:textColor="@color/mypets_yellow"
+            android:textAppearance="@android:style/TextAppearance.Large"
+            android:background="@color/mypets_tan" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        android:layout_weight="3"
+        android:background="@drawable/abc_ab_solid_dark_holo">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:id="@+id/num_pets_summary"
+            android:text="@string/formatted_pet_count"
+            android:textColor="@color/mypets_text"
+            android:gravity="center"
+            android:layout_gravity="top"
+            android:typeface="normal"
+            android:textStyle="bold"
+            android:textIsSelectable="false"
+            android:textAppearance="@android:style/TextAppearance.Large"/>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="189dp"
+            android:id="@+id/listview_pets" />
+    </LinearLayout>
+
+</LinearLayout>

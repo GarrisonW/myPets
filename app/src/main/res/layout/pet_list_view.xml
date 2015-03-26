@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:layout_width="60dp"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
             android:id="@+id/list_pet_avatar"
             android:layout_width="48dp"
@@ -28,6 +28,7 @@
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:id="@+id/list_pet_name"
             android:textAppearance="@android:style/TextAppearance.Large" />
 
@@ -39,4 +40,5 @@
             android:textAppearance="@android:style/TextAppearance.Small" />
 
     </LinearLayout>
+
 </LinearLayout>

@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.garrison.mypets.R;
 
@@ -19,7 +18,12 @@ public class LocationFinder {
 
     private static final String LOG_TAG = LocationFinder.class.getSimpleName();
 
-    public static void setLocation(Context context) {
+    public static final int LOCATION_FINDER_OK = 0;
+    public static final int LOCATION_FINDER_NO_PERMISSIONS = 1;
+    public static final int LOCATION_FINDER_NOT_AVAILABLE = 2;
+
+
+    public static int setLocation(Context context) {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
             }
@@ -38,15 +42,26 @@ public class LocationFinder {
             LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             boolean gpsEnabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
             boolean networkEnabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            if (networkEnabled)
+
+            Location loc = null;
+
+            if (networkEnabled) {
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-            else if (gpsEnabled)
+                loc = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
+            else if (gpsEnabled) {
                 lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                loc = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            }
             else {
                 // TODO:  No networks
-               Toast.makeText(context, "There is no connection available to retrieve vets", Toast.LENGTH_LONG).show();
+                Log.v(LOG_TAG, "Location services not available");
             }
-            Location loc = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            if (loc == null) {
+                return LOCATION_FINDER_NOT_AVAILABLE;
+            }
+
             double longitude = loc.getLongitude();
             double latitude = loc.getLatitude();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -55,9 +70,12 @@ public class LocationFinder {
             prefsEditor.putLong(context.getString(R.string.pref_longitude), Double.doubleToLongBits(longitude));
             prefsEditor.commit();
 
-        } catch (SecurityException se) {
-            // TODO:  Launch permissions were not granted dialog
-            Log.v(LOG_TAG, "Location services not available");
+        } catch (Exception se) {
+            Log.v(LOG_TAG, "Location services require permission");
+            return LOCATION_FINDER_NO_PERMISSIONS;
         }
+
+        return LOCATION_FINDER_OK;
     }
+
 }

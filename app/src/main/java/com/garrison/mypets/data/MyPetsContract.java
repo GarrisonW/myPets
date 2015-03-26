@@ -28,18 +28,30 @@ public class MyPetsContract {
 
         //  Pet name
         public static final String COLUMN_PET_NAME = "petName";
+        //  Pet photo
+        public static final String COLUMN_AVATAR_URI = "avatar";
         //  Position of species in spinner
         public static final String COLUMN_SPECIES_POS = "speciesPos";
         //  Species Text
         public static final String COLUMN_SPECIES_TEXT = "speciesText";
+        //  Pet breed
+        public static final String COLUMN_BREED = "breed";
+        //  Pet appearance
+        public static final String COLUMN_COLOR_POS = "colorPos";
+        //  Pet appearance
+        public static final String COLUMN_COLOR_TEXT = "colorText";
         //  Pet diet Text
         public static final String COLUMN_DIET = "diet";
         //  Pet diet frequency
         public static final String COLUMN_DIET_FREQUENCY_POS = "frequency";
+        //  Pet meds table id (FUTURE)
+        public static final String COLUMN_MEDS_ID = "medsID";
+        //  Pet medications free text
+        public static final String COLUMN_MEDS_FREE_TEXT = "medsFreeText";
         //  Radio ID tag number
         public static final String COLUMN_MICROCHIP = "microchip";
-        //  Pet photo
-        public static final String COLUMN_AVATAR_URI = "avatar";
+        //  Other Free Text
+        public static final String COLUMN_OTHER_FREE_TEXT = "otherInfo";
 
         //   Setters and getters for Content Provider Uri - Pets Table
         public static Uri buildPetsUri() {

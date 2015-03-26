@@ -5,8 +5,11 @@
     <string name="pref_latitude">storedLatitude</string>
     <string name="pref_longitude">storedLongitude</string>
 
-    <string name="contacts_title">Emergency Contacts</string>
     <string name="emergency_contacts">Emergency Contacts</string>
+
+    <string name="title_vet_finder">Find a Vet</string>
+    <string name="title_new_pet">New Pet</string>
+    <string name="title_contacts">Emergency Contacts</string>
 
     <string name="button_emergency_contacts">Emergency Contacts</string>
     <string name="button_find_vet">Find a Vet Now</string>
@@ -17,11 +20,17 @@
     <string name="action_settings">Settings</string>
 
     <string name="name_title">Pet name:</string>
+    <string name="breed_title">Breed:</string>
+    <string name="meds_title">Medications:</string>
+    <string name="other_title">Other/Special Instructions:</string>
     <string name="microchip_title">Microchip ID:</string>
 
     <string name="edittext_name_hint">Pet Name</string>
+    <string name="edittext_breed_hint">Breed</string>
     <string name="edittext_diet_hint">Diet</string>
+    <string name="edittext_meds_hint">Medication and doses</string>
     <string name="edittext_microchip_hint">Microchip ID</string>
+    <string name="edittext_other_hint">Other instructions</string>
 
     <string name="share_email_subject">Notification from MyPets</string>
     <string name="share_message">Hello, Just a quick note to let you know I have added you as an emergency caretaker for my pets.</string>
@@ -36,15 +45,16 @@
     <string name="remove">Remove Pet</string>
     <string name="cancel">Cancel</string>
 
-    <string name="spinner_title_species">My pet is a:</string>
-    <string-array name="frequency_array">
-        <item>Daily</item>
-        <item>Twice a day</item>
-        <item>Three times a day</item>
-    </string-array>
+    <string name="service_not_available">Location Service not enable or no connection is available.</string>
+    <string name="okay">Okay</string>
 
-    <string name="spinner_title_frequency">My pet eats:</string>
-    <string-array name="species_array">
+    <string name="text_here">You are here</string>
+    <string name="text_open">Open</string>
+    <string name="text_closed">Closed</string>
+    <string name="text_unknown">Unknown</string>
+
+    <string name="spinner_title_species">My pet is a:</string>
+    <string-array name="array_species">
         <item>Cat</item>
         <item>Dog</item>
         <item>Bird</item>
@@ -52,6 +62,31 @@
         <item>Ferret</item>
         <item>Panda</item>
     </string-array>
+
+    <string name="spinner_title_color">Color:</string>
+    <string-array name="array_color">
+        <item>N/A</item>
+        <item>Black</item>
+        <item>Brown</item>
+        <item>White</item>
+        <item>Yellow</item>
+        <item>Grey</item>
+        <item>Red</item>
+        <item>Calico</item>
+        <item>Tortoise Shell</item>
+        <item>Spotted</item>
+        <item>Multi-Colored</item>
+    </string-array>
+
+
+    <string name="spinner_title_frequency">My pet eats:</string>
+    <string-array name="array_frequency">
+        <item>Food stays out</item>
+        <item>Daily</item>
+        <item>Twice a day</item>
+        <item>Other (see Special Instructions)</item>
+    </string-array>
+
 
     <!-- Account type (for sync-adapter authenticator) -->
     <!-- SyncAdapter related -->

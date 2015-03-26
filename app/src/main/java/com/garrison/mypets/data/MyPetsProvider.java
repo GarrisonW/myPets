@@ -54,7 +54,7 @@ public class MyPetsProvider extends ContentProvider {
     public boolean onCreate() {
 
        //CLEAR DATABASE FOR TESTING:
-//getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
+getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
         mDBHelper = new MyPetsDBHelper(getContext());
         return true;
     }
