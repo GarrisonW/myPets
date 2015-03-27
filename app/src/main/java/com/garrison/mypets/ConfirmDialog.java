@@ -18,15 +18,15 @@ public class ConfirmDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage(R.string.remove)
-                .setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
+               .setPositiveButton(R.string.remove, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        petFragment = (PetFragment) getTargetFragment();
-                        petFragment.removePet();
-                    }
+                       petFragment = (PetFragment) getTargetFragment();
+                       petFragment.removePet();
+                   }
                 })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
+               .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                   public void onClick(DialogInterface dialog, int id) {
+                   }
                 });
         // Create the AlertDialog object and return it
         return builder.create();
