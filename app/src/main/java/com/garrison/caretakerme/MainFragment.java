@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -14,6 +14,8 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,21 +28,22 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.garrison.mypets.data.MyPetsContract.PetTable;
-import com.garrison.mypets.sync.VetFinderSyncAdapter;
-import com.garrison.mypets.util.LocationFinder;
+import com.garrison.caretakerme.data.CaretakerMeContract.PetTable;
+import com.garrison.caretakerme.data.CaretakerMeProvider;
+import com.garrison.caretakerme.sync.VetFinderSyncAdapter;
+import com.garrison.caretakerme.util.LocationFinder;
+import com.garrison.caretakerme.util.PetSelectorDialog;
 
-import java.io.BufferedReader;
+import java.util.ArrayList;
 
 /**
  * Created by Garrison on 9/29/2014.
  */
-public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, PetSelectorDialog.Callback{
 
     private final String LOG_TAG = MainFragment.class.getSimpleName();
     private static final int PET_LOADER = 0;
 
-    private int numberOfPets = -1;
     public ListView mPetListView = null;
     public PetsListAdapter mPetsListAdapter = null;
 
@@ -49,36 +52,20 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
     public ProgressBar mProgressSpinner = null;
     public TextView mPetCountTextView = null;
 
-    double latitude = 0.0;
-    double longitude = 0.0;
-
-    BufferedReader reader = null;
+    private ArrayList<Integer> petIndex = new ArrayList<Integer>();
 
     private static final String[] PETS_TABLE_COLUMNS = {
             PetTable.TABLE_NAME + "." + PetTable._ID,
             PetTable.COLUMN_PET_NAME,
-            PetTable.COLUMN_SPECIES_POS,
             PetTable.COLUMN_SPECIES_TEXT,
-            PetTable.COLUMN_BREED,
-            PetTable.COLUMN_COLOR_POS,
-            PetTable.COLUMN_COLOR_TEXT,
-            PetTable.COLUMN_MICROCHIP,
-            PetTable.COLUMN_MEDS_FREE_TEXT,
-            PetTable.COLUMN_OTHER_FREE_TEXT,
             PetTable.COLUMN_AVATAR_URI
     };
 
     public static final int ADAPTER_BINDER_COL_PET_ID = 0;
     public static final int ADAPTER_BINDER_COL_PET_NAME = 1;
-    public static final int ADAPTER_BINDER_COL_SPECIES_POS = 2;
-    public static final int ADAPTER_BINDER_COL_SPECIES_TEXT = 3;
-    public static final int ADAPTER_BINDER_COL_BREED = 4;
-    public static final int ADAPTER_BINDER_COL_COLOR_POS = 5;
-    public static final int ADAPTER_BINDER_COL_COLOR_TEXT = 6;
-    public static final int ADAPTER_BINDER_COL_MICROCHIP = 7;
-    public static final int ADAPTER_BINDER_COL_MEDS_FREE_TEXT = 8;
-    public static final int ADAPTER_BINDER_COL_OTHER_FREE_TEXT = 9;
-    public static final int ADAPTER_BINDER_COL_AVATAR = 10;
+    public static final int ADAPTER_BINDER_COL_SPECIES_TEXT = 2;
+    public static final int ADAPTER_BINDER_COL_AVATAR = 3;
+
 
     public MainFragment() {
         super();
@@ -181,6 +168,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             ((Callback) getActivity()).onItemSelected(-1);
             return true;
         }
+        if (id == R.id.action_share_caresheet_main) {
+            shareCareSheet();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -222,12 +213,11 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         );
     }
 
-
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         int numberOfPets = data.getCount();
         Context context = getView().getContext();
-        String formattedPetCount = null;
+        String formattedPetCount;
 
         if (numberOfPets == 0)
             formattedPetCount = context.getString(R.string.startup_text);
@@ -239,26 +229,123 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         mPetsListAdapter.swapCursor(data);
     }
 
-
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         mPetsListAdapter.swapCursor(null);
-    }
-
-    public interface Callback {
-
-        public void onItemSelected(int _ID);
     }
 
     // handler for received Intents for the "my-event" event
     private BroadcastReceiver mVetDataLoadReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // Extract data included in the Intent
-            String message = intent.getStringExtra(context.getString(R.string.broadcast_vet_message));
             Intent intentMap = new Intent(context, VetsMapActivity.class);
             startActivity(intentMap);
 
         }
     };
+
+    private void shareCareSheet() {
+        PetSelectorDialog petSelectorDialog = new PetSelectorDialog();
+        Cursor cursor = mPetsListAdapter.getCursor();
+        ArrayList<String> petList= new ArrayList<String>();
+        cursor.moveToFirst();
+        for (int i=0; i < cursor.getCount(); i++) {
+            petList.add(cursor.getString(ADAPTER_BINDER_COL_PET_NAME));
+            Log.v(LOG_TAG, "All Pet in list: " + i + " " + cursor.getString(ADAPTER_BINDER_COL_PET_NAME));
+            petIndex.add(cursor.getInt(ADAPTER_BINDER_COL_PET_ID));
+            cursor.moveToNext();
+        }
+        CharSequence[] petNames  = petList.toArray(new CharSequence[petList.size()]);
+        petSelectorDialog.setPetNames(petNames);
+        petSelectorDialog.setTargetFragment(this, 0);
+        petSelectorDialog.show(getFragmentManager(), "PetSelectDialog");
+    }
+
+    @Override
+    public void getSelectedPets(ArrayList<Integer> selectedPets) {
+        if (selectedPets.size() > 0) {
+            String careSheetText = "";
+            boolean addFooter = false;
+
+            for (int i = 0; i < selectedPets.size(); i++) {
+                Cursor cursor = (Cursor) mPetListView.getItemAtPosition(selectedPets.get(i));
+                int _ID = cursor.getInt(ADAPTER_BINDER_COL_PET_ID);
+
+                careSheetText = careSheetText +  getFormattedCareSheet(_ID);
+                addFooter = true;
+            }
+            if (addFooter) {
+                StringBuilder footerHtml = new StringBuilder();
+                footerHtml
+                   .append("<P><small><small>This caresheet assembled from the <B><FONT color=blue>CaretakerMe</FONT></B> Android app.")
+                   .append("<br>\"Because our pets are loved.\"")
+                   .append("<br>Available at the Google Play Store");
+
+                String footer = footerHtml.toString();
+                careSheetText = careSheetText + footer;
+            }
+
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+            shareIntent.setType("message/rfc822");
+
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getText(R.string.email_subject_caresheet));
+            shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(careSheetText));
+            startActivity(Intent.createChooser(shareIntent, getText(R.string.share_caresheet_header)));
+        }
+    }
+
+    public String getFormattedCareSheet(int _ID) {
+
+        String[] projection = {
+                PetTable.COLUMN_PET_NAME,
+                PetTable.COLUMN_SPECIES_TEXT,
+                PetTable.COLUMN_BREED,
+                PetTable.COLUMN_COLOR_TEXT,
+                PetTable.COLUMN_DIET,
+                PetTable.COLUMN_DIET_FREQUENCY_POS,
+                PetTable.COLUMN_DIET_FREQUENCY_TEXT,
+                PetTable.COLUMN_MEDS_FREE_TEXT,
+                PetTable.COLUMN_MICROCHIP,
+                PetTable.COLUMN_OTHER_FREE_TEXT,
+                PetTable.COLUMN_AVATAR_URI
+        };
+        CaretakerMeProvider caretakerMeProvider = new CaretakerMeProvider();
+
+        Cursor cursor = caretakerMeProvider.query(
+                PetTable.buildPetUri(_ID),
+                projection,
+                null,
+                null,
+                null
+        );
+
+        cursor.moveToFirst();
+
+        String petName = cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_PET_NAME));
+
+        StringBuilder htmlText = new StringBuilder();
+        htmlText
+                .append("<p><b><large>" + petName + "</large></b>")
+                .append("<br><small>" + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_SPECIES_TEXT)))
+                .append(" - " + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_BREED)))
+                .append(" - " + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_COLOR_TEXT)))
+                .append("<p><font color=blue>Diet</font>")
+                .append("<br>" + petName + " likes to eat: " + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_DIET)))
+                .append("<br>" + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_DIET_FREQUENCY_TEXT)))
+                .append("<p><font color=blue>Medications</font>")
+                .append("<br>" + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_MEDS_FREE_TEXT)))
+                .append("<p><font color=blue>Other Information</font>")
+                .append("<br>" + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_OTHER_FREE_TEXT)))
+                .append("<p><font color=blue>Microchip ID</font>")
+                .append("<br>" + cursor.getString(cursor.getColumnIndex(PetTable.COLUMN_MICROCHIP)))
+                .append("<br>----------------------------------------------------------------------------</small>");
+
+        return htmlText.toString();
+    }
+
+    public interface Callback {
+        public void onItemSelected(int _ID);
+    }
 }

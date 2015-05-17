@@ -1,4 +1,4 @@
-package com.garrison.mypets.sync;
+package com.garrison.caretakerme.sync;
 /**
  * Created by Garrison on 9/21/2014.
  */

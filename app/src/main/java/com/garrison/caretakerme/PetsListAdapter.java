@@ -1,9 +1,8 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,20 +10,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.garrison.mypets.util.ImageHandler;
+import com.garrison.caretakerme.util.ImageHandler;
 
 /**
  * Created by Garrison on 10/4/2014.
  */
 public class PetsListAdapter extends CursorAdapter {
 
-    private final String LOG_TAG = PetsListAdapter.class.getSimpleName();
-
     public PetsListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
-
-    private Uri mAvatarUri = null;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -41,7 +36,6 @@ public class PetsListAdapter extends CursorAdapter {
         String avatarUri = cursor.getString(MainFragment.ADAPTER_BINDER_COL_AVATAR);
 
         if (avatarUri != null) {
-            mAvatarUri = Uri.parse(avatarUri);
             Bitmap sizedBitmap = ImageHandler.resizeImage(context, avatarUri, 25, 25);
             viewHolder.petAvatarImageView.setImageBitmap(sizedBitmap);
         }

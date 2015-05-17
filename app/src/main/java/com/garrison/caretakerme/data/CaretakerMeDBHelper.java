@@ -1,4 +1,4 @@
-package com.garrison.mypets.data;
+package com.garrison.caretakerme.data;
 
 /**
  * Created by Garrison on 10/15/2014.
@@ -9,21 +9,19 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.garrison.mypets.data.MyPetsContract.PetTable;
-import com.garrison.mypets.data.MyPetsContract.PetsEmergencyContactsTable;
-import com.garrison.mypets.data.MyPetsContract.VetsTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.PetTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.PetsEmergencyContactsTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.VetsTable;
 
 /**
  * Created by Garrison on 10/1/2014.
  */
-public class MyPetsDBHelper extends SQLiteOpenHelper {
-
-    private final String LOG_TAG = MyPetsDBHelper.class.getSimpleName();
+public class CaretakerMeDBHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "pets.db";
 
-    public MyPetsDBHelper(Context context) {
+    public CaretakerMeDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -38,7 +36,8 @@ public class MyPetsDBHelper extends SQLiteOpenHelper {
                 PetTable.COLUMN_COLOR_POS          + " INTEGER, " +
                 PetTable.COLUMN_COLOR_TEXT         + " TEXT, " +
                 PetTable.COLUMN_DIET               + " TEXT, " +
-                PetTable.COLUMN_DIET_FREQUENCY_POS + " INTEGER, " +
+                PetTable.COLUMN_DIET_FREQUENCY_POS  + " INTEGER, " +
+                PetTable.COLUMN_DIET_FREQUENCY_TEXT + " TEXT, " +
                 PetTable.COLUMN_MEDS_FREE_TEXT     + " TEXT, " +
                 PetTable.COLUMN_MICROCHIP          + " TEXT, " +
                 PetTable.COLUMN_OTHER_FREE_TEXT    + " TEXT, " +

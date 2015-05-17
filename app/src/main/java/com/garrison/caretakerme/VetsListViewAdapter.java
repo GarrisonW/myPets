@@ -1,8 +1,7 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
 import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,9 +25,6 @@ import java.util.HashMap;
  * Created by Garrison on 2/5/2015.
  */
 public class VetsListViewAdapter extends CursorAdapter {
-    private final String LOG_TAG = VetsListViewAdapter.class.getSimpleName();
-
-    int i= -1;
 
     public VetsListFragment mVetListFragment = null;
 
@@ -48,8 +44,6 @@ public class VetsListViewAdapter extends CursorAdapter {
 
     private HashMap<Integer, Marker> posToMarkerMap = new HashMap<Integer, Marker>();
     private HashMap<Marker, Integer> markerToPosMap = new HashMap<Marker, Integer>();
-
-    private Uri mAvatarUri = null;
 
     @Override
     public View newView(final Context context, Cursor cursor, ViewGroup viewGroup) {
@@ -99,15 +93,7 @@ public class VetsListViewAdapter extends CursorAdapter {
                 int pos = mVetsListView.getPositionForView(view);
                 Cursor cursor = (Cursor)mVetsListView.getItemAtPosition(pos);
                 String phoneNo = cursor.getString(VetsListFragment.ADAPTER_BINDER_COL_VET_PHONE);
-                ((Callback)mVetListFragment).phoneVet(phoneNo);
-            }
-        });
-
-        vetName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = mVetsListView.getPositionForView(view);
-                isolateVet(null, pos);
+                mVetListFragment.phoneVet(phoneNo);
             }
         });
 
@@ -136,8 +122,8 @@ public class VetsListViewAdapter extends CursorAdapter {
         double longitude = cursor.getDouble(VetsListFragment.ADAPTER_BINDER_COL_VET_LONGITUDE);
         int open = cursor.getInt(VetsListFragment.ADAPTER_BINDER_COL_VET_OPEN);
 
-        int markerBitmapResource = 0;
-        int vetItemBitmapResource = 0;
+        int markerBitmapResource;
+        int vetItemBitmapResource;
 
         if (open == 0) {
             markerBitmapResource = R.drawable.marker_red;
@@ -160,8 +146,6 @@ public class VetsListViewAdapter extends CursorAdapter {
                 .icon(BitmapDescriptorFactory.fromResource(markerBitmapResource));
 
         Marker marker = googleMap.addMarker(markerOptions);
-
-        int vet_ID =  cursor.getInt(VetsListFragment.ADAPTER_BINDER_COL_VETS_ID);
 
         int position = cursor.getPosition();
         posToMarkerMap.put(position, marker);
@@ -187,7 +171,7 @@ public class VetsListViewAdapter extends CursorAdapter {
 
     public void isolateVet(Marker marker, int position) {
 
-        Cursor cursor = null;
+        Cursor cursor;
 
         if (marker == null)
             marker = posToMarkerMap.get(position);
@@ -199,7 +183,7 @@ public class VetsListViewAdapter extends CursorAdapter {
         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple_dot));
         if ((previousMarker != null) && (previousMarker != marker)) {
             int open = previousCursor.getInt(VetsListFragment.ADAPTER_BINDER_COL_VET_OPEN);
-            int bitmapResource = 0;
+            int bitmapResource;
 
             if (open == 0)
                 bitmapResource = R.drawable.marker_red;
@@ -210,7 +194,8 @@ public class VetsListViewAdapter extends CursorAdapter {
             previousMarker.setIcon(BitmapDescriptorFactory.fromResource(bitmapResource));
         }
 
-        mVetsListView.setSelection(position);
+        mVetsListView.smoothScrollToPosition(position);
+        //mVetsListView.setSelection(position);
 
         marker.showInfoWindow();
 
@@ -227,9 +212,4 @@ public class VetsListViewAdapter extends CursorAdapter {
         notifyDataSetChanged();
 
     }
-
-    public interface Callback {
-        public void phoneVet(String vetNumber);
-    }
-
 }

@@ -1,4 +1,4 @@
-package com.garrison.mypets.data;
+package com.garrison.caretakerme.data;
 
 import android.content.ContentUris;
 import android.net.Uri;
@@ -7,10 +7,10 @@ import android.provider.BaseColumns;
 /**
  * Created by Garrison on 10/1/2014.
  */
-public class MyPetsContract {
+public class CaretakerMeContract {
 
     // Content Definitions
-    public static String CONTENT_AUTHORITY = "com.garrison.mypets";
+    public static String CONTENT_AUTHORITY = "com.garrison.caretakerme";
     public static Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static String PATH_PET = "pets";
@@ -42,8 +42,10 @@ public class MyPetsContract {
         public static final String COLUMN_COLOR_TEXT = "colorText";
         //  Pet diet Text
         public static final String COLUMN_DIET = "diet";
-        //  Pet diet frequency
-        public static final String COLUMN_DIET_FREQUENCY_POS = "frequency";
+        //  Pet diet frequency position
+        public static final String COLUMN_DIET_FREQUENCY_POS = "frequencyPos";
+        //  Pet diet frequency position
+        public static final String COLUMN_DIET_FREQUENCY_TEXT = "frequencyText";
         //  Pet meds table id (FUTURE)
         public static final String COLUMN_MEDS_ID = "medsID";
         //  Pet medications free text
@@ -125,7 +127,7 @@ public class MyPetsContract {
         public static Uri buildVetsUri() {
             return CONTENT_URI;
         }
-        public static Uri builVetsUri(long _id) {
+        public static Uri buildVetsUri(long _id) {
             return ContentUris.withAppendedId(CONTENT_URI, _id);
         }
     }

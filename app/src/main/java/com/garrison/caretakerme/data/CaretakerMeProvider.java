@@ -1,6 +1,7 @@
-package com.garrison.mypets.data;
+package com.garrison.caretakerme.data;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -8,16 +9,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-import com.garrison.mypets.data.MyPetsContract.PetTable;
-import com.garrison.mypets.data.MyPetsContract.PetsEmergencyContactsTable;
-import com.garrison.mypets.data.MyPetsContract.VetsTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.PetTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.PetsEmergencyContactsTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.VetsTable;
 
 /**
  * Created by Garrison on 10/1/2014.
  */
-public class MyPetsProvider extends ContentProvider {
+public class CaretakerMeProvider extends ContentProvider {
 
-    private final String LOG_TAG = MyPetsProvider.class.getSimpleName();
+    private final String LOG_TAG = CaretakerMeProvider.class.getSimpleName();
 
     private static final int PETS = 100;
     private static final int PET_BY_ID = 101;
@@ -29,7 +30,7 @@ public class MyPetsProvider extends ContentProvider {
     private static final int VETS = 300;
     private static final int VET_BY_ID = 301;
 
-    MyPetsDBHelper mDBHelper = null;
+    private static CaretakerMeDBHelper mDBHelper = null;
     UriMatcher sUriMatcher = buildUriMatcher();
 
 
@@ -46,7 +47,7 @@ public class MyPetsProvider extends ContentProvider {
 
     */
 
-    public MyPetsProvider() {
+    public CaretakerMeProvider() {
         super();
     }
 
@@ -54,15 +55,15 @@ public class MyPetsProvider extends ContentProvider {
     public boolean onCreate() {
 
        //CLEAR DATABASE FOR TESTING:
-getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
-        mDBHelper = new MyPetsDBHelper(getContext());
+//getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
+        mDBHelper = new CaretakerMeDBHelper(getContext());
         return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String queryString, String[] selectionArgs, String sortOrder) {
 
-        Cursor retCursor = null;
+        Cursor retCursor;
         SQLiteDatabase db = mDBHelper.getReadableDatabase();
 
         switch (sUriMatcher.match(uri)) {
@@ -85,7 +86,7 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
                 retCursor = db.query(
                         PetTable.TABLE_NAME,
                         projection,
-                        queryString,
+                        PetTable._ID + " = " + ContentUris.parseId(uri),
                         selectionArgs,
                         null,
                         null,
@@ -162,10 +163,8 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
         SQLiteDatabase db = mDBHelper.getWritableDatabase();
 
         int myMatch = sUriMatcher.match(uri);
-        Uri returnUri = null;
+        Uri returnUri;
         long _id = 0;
-
-        Cursor retCursor;
 
         switch (myMatch) {
             case PETS: {
@@ -198,7 +197,7 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
                 }
 
                 if ( _id > 0 )
-                    returnUri = VetsTable.builVetsUri(_id);
+                    returnUri = VetsTable.buildVetsUri(_id);
                 else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -309,15 +308,15 @@ getContext().deleteDatabase(mDBHelper.DATABASE_NAME);
     public static UriMatcher buildUriMatcher(){
 
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        String authority = MyPetsContract.CONTENT_AUTHORITY;
+        String authority = CaretakerMeContract.CONTENT_AUTHORITY;
 
-        uriMatcher.addURI(authority, MyPetsContract.PATH_PET, PETS);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_PET + "/#", PET_BY_ID);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_EMERGENCY_CONTACT, EMERGENCY_CONTACTS);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_EMERGENCY_CONTACT + "/#", EMERGENCY_CONTACTS_BY_ID);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_EMERGENCY_CONTACT + "/*", EMERGENCY_CONTACTS_BY_LOOKUP_ID);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_VETS, VETS);
-        uriMatcher.addURI(authority, MyPetsContract.PATH_VETS + "/#", VET_BY_ID);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_PET, PETS);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_PET + "/#", PET_BY_ID);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_EMERGENCY_CONTACT, EMERGENCY_CONTACTS);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_EMERGENCY_CONTACT + "/#", EMERGENCY_CONTACTS_BY_ID);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_EMERGENCY_CONTACT + "/*", EMERGENCY_CONTACTS_BY_LOOKUP_ID);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_VETS, VETS);
+        uriMatcher.addURI(authority, CaretakerMeContract.PATH_VETS + "/#", VET_BY_ID);
 
         return uriMatcher;
     }

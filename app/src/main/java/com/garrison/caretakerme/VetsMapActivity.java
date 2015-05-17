@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,8 +18,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * Created by Garrison on 2/2/2015.
  */
 public class VetsMapActivity extends ActionBarActivity implements OnMapReadyCallback  {
-
-    private static final String LOG_TAG = VetsMapActivity.class.getSimpleName();
 
     public static GoogleMap googleMap = null;
 
@@ -48,7 +46,6 @@ public class VetsMapActivity extends ActionBarActivity implements OnMapReadyCall
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.vets_map);
         mapFragment.getMapAsync(this);
-
     }
 
     public void initializeMap() {

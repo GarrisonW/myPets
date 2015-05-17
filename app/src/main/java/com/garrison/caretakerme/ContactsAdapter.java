@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -18,8 +18,6 @@ import android.widget.TextView;
  * Created by Garrison on 10/15/2014.
  */
 public class ContactsAdapter extends CursorAdapter {
-
-    private final String LOG_TAG = ContactsAdapter.class.getSimpleName();
 
     public ContactsFragment mContactFragment = null;
     public ListView mContactsListView = null;
@@ -49,8 +47,7 @@ public class ContactsAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 int pos = mContactsListView.getPositionForView((View) v.getParent());
-                Cursor cursor = (Cursor)mContactsListView.getItemAtPosition(pos);
-                ((Callback)mContactFragment).viewContact(pos);
+                mContactFragment.viewContact(pos);
             }
         });
 
@@ -58,8 +55,7 @@ public class ContactsAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 int pos = mContactsListView.getPositionForView((View) v.getParent());
-                Cursor cursor = (Cursor)mContactsListView.getItemAtPosition(pos);
-                ((Callback)mContactFragment).shareContact(pos);
+                mContactFragment.shareContact(pos);
             }
         });
 
@@ -67,8 +63,7 @@ public class ContactsAdapter extends CursorAdapter {
             @Override
             public void onClick(View v) {
                 int pos = mContactsListView.getPositionForView((View) v.getParent());
-                Cursor cursor = (Cursor)mContactsListView.getItemAtPosition(pos);
-                ((Callback)mContactFragment).clearContact(pos);
+                mContactFragment.clearContact(pos);
 
             }
         });
@@ -91,7 +86,7 @@ public class ContactsAdapter extends CursorAdapter {
 
         // Need to reset this to the default image for some reason
         Resources res = context.getResources();
-        Drawable draw = res.getDrawable(R.drawable.mypets_launcher);
+        Drawable draw = res.getDrawable(R.drawable.caretakerme_launcher);
 
         viewHolder.contactPhotoImageView.setImageDrawable(draw);
         if (contactPhotoString != null) {
@@ -117,13 +112,6 @@ public class ContactsAdapter extends CursorAdapter {
             shareContactButton = (Button) view.findViewById(R.id.share_contact_button);
             clearContactButton = (Button) view.findViewById(R.id.clear_contact_button);
         }
-    }
-
-    public interface Callback {
-        public void viewContact(int pos);
-        public void clearContact(int pos);
-        public void shareContact(int pos);
-
     }
 }
 

@@ -1,15 +1,13 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-import com.garrison.mypets.services.ContactsNotificationService;
+import com.garrison.caretakerme.services.ContactsNotificationService;
 
 
-public class MainActivity extends ActionBarActivity implements MainFragment.Callback{
-
-    private final String LOG_TAG = MainActivity.class.getSimpleName();
+public class MainActivity extends ActionBarActivity implements MainFragment.Callback {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +16,11 @@ public class MainActivity extends ActionBarActivity implements MainFragment.Call
 
         Intent mServiceIntent = new Intent(this, ContactsNotificationService.class);
         startService(mServiceIntent);
-
-        MainFragment mainPetsFragment = (MainFragment) getSupportFragmentManager()
-            .findFragmentById(R.id.fragment_main);
     }
 
-    // Implementation of Call back from MainFragment
+    // Implementation of Callback from MainFragment
     @Override
     public void onItemSelected(int _ID) {
-
         Intent intent = new Intent(this, PetActivity.class).putExtra(Intent.EXTRA_TEXT, _ID);
         startActivity(intent);
     }

@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -7,18 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
-import com.garrison.mypets.data.MyPetsContract;
+import com.garrison.caretakerme.data.CaretakerMeContract;
 
-import static com.garrison.mypets.data.MyPetsContract.PetsEmergencyContactsTable;
+import static com.garrison.caretakerme.data.CaretakerMeContract.PetsEmergencyContactsTable;
 
 /**
  * Created by Garrison on 10/18/2014.
  */
 public class ContactsActivity extends ActionBarActivity implements ContactsFragment.Callback {
-
-    private final String LOG_TAG = ContactsActivity.class.getSimpleName();
 
     private static final int CONTACTS_PICKER_RESULT = 100;
 
@@ -30,8 +27,6 @@ public class ContactsActivity extends ActionBarActivity implements ContactsFragm
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.contacts_activity);
-        ContactsFragment contentsFragment = (ContactsFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.fragment_contacts);
     }
 
     @Override
@@ -91,8 +86,8 @@ public class ContactsActivity extends ActionBarActivity implements ContactsFragm
             contactValues.put(PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_EMAIL, emailAddress);
             contactValues.put(PetsEmergencyContactsTable.COLUMN_EMER_CONTACT_STATE, 1);
             if (_ID > 0) {
-                String updateStmt = MyPetsContract.PetTable._ID + " = " + _ID;
-                int numRows = getContentResolver().update(PetsEmergencyContactsTable.buildEmergencyContactUri(_ID), contactValues, updateStmt, null);
+                String updateStmt = CaretakerMeContract.PetTable._ID + " = " + _ID;
+                getContentResolver().update(PetsEmergencyContactsTable.buildEmergencyContactUri(_ID), contactValues, updateStmt, null);
             }
 
         }

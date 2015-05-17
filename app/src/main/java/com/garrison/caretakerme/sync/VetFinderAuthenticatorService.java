@@ -1,4 +1,4 @@
-package com.garrison.mypets.sync;
+package com.garrison.caretakerme.sync;
 
 import android.app.Service;
 import android.content.Intent;

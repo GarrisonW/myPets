@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -15,14 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.garrison.mypets.data.MyPetsContract.VetsTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.VetsTable;
 
 /**
  * Created by Garrison on 2/5/2015.
  */
-public class VetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>, VetsListViewAdapter.Callback {
+public class VetsListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final String LOG_TAG = VetsListFragment.class.getSimpleName();
     private static final int VETS_LOADER = 5;
 
     private ListView mVetsListView = null;
@@ -80,7 +79,6 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
         mVetListViewAdapter.setFragment(this);
         mVetListViewAdapter.setListView(mVetsListView);
 
-
         PaintDrawable div = new PaintDrawable(R.drawable.divider);
         mVetsListView.setDivider(div);
 
@@ -119,7 +117,6 @@ public class VetsListFragment extends ListFragment implements LoaderManager.Load
         mVetListViewAdapter.swapCursor(null);
     }
 
-    @Override
     public void phoneVet(String vetNumber) {
 
         Intent intent = new Intent(Intent.ACTION_DIAL);

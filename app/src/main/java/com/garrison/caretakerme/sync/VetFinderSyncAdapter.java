@@ -1,4 +1,4 @@
-package com.garrison.mypets.sync;
+package com.garrison.caretakerme.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -17,8 +17,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.garrison.mypets.R;
-import com.garrison.mypets.data.MyPetsContract.VetsTable;
+import com.garrison.caretakerme.R;
+import com.garrison.caretakerme.data.CaretakerMeContract.VetsTable;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,7 +98,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
                 .appendQueryParameter("types", types)
                 .build();
 
-        URL vetsURL = null;
+        URL vetsURL;
         try {
             vetsURL = new URL(builder.toString());
         }
@@ -122,7 +122,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             // Read the input stream into a String
             String line;
             while ((line = reader.readLine()) != null) {
@@ -141,7 +141,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         }
         catch (IOException ioe) {
-            Log.e(LOG_TAG, "MYPETS IO ERROR: " + ioe.getMessage());
+            Log.e(LOG_TAG, "CaretakerMe IO ERROR: " + ioe.getMessage());
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -152,7 +152,6 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
                 } catch (final IOException e) {
                     sendBroadcastMessage("Error closing stream");
                     Log.e(LOG_TAG, "Error closing stream", e);
-                    return;
                 }
             }
         }
@@ -165,7 +164,6 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         }
 
         sendBroadcastMessage("Sync completed");
-        return;
     }
 
     /**
@@ -234,18 +232,18 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
         final String VETS_OPEN_HOURS_OBJECT = "opening_hours";
         final String VETS_OPEN = "open_now";
 
-        JSONObject resultsObject = null;
-        JSONObject vetsLocationObject = null;
-        JSONObject vetsGeoObject = null;
-        JSONObject vetsOpenHoursObject = null;
+        JSONObject resultsObject;
+        JSONObject vetsLocationObject;
+        JSONObject vetsGeoObject;
+        JSONObject vetsOpenHoursObject;
 
-        String vetName = "";
-        String vetPlaceID = "";
-        String vetAddress = "";
-        String vetPhone = "";
-        String vetOpen = "false";
-        double vetLatitude = 0.0;
-        double vetLongitude = 0.0;
+        String vetName;
+        String vetPlaceID;
+        String vetAddress;
+        String vetPhone;
+        String vetOpen;
+        double vetLatitude;
+        double vetLongitude;
 
         try {
             JSONObject vetJSON = new JSONObject(vetJSONString);
@@ -254,13 +252,8 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
             Vector<ContentValues> loaderVector = new Vector<ContentValues>(vetsArray.length());
 
             for(int i = 0; i < vetsArray.length(); i++) {
-                vetPlaceID = "";
-                vetName = "";
-                vetAddress = "";
                 vetPhone = "";
                 vetOpen = "";
-                vetLatitude = 0.0;
-                vetLongitude = 0.0;
 
                 ContentValues vetDataValues = new ContentValues();
                 resultsObject = vetsArray.getJSONObject(i);
@@ -299,11 +292,10 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             if (loaderVector.size() > 0) {
-                int rowsDeleted = context.getContentResolver().delete(VetsTable.CONTENT_URI, null, null);
+                context.getContentResolver().delete(VetsTable.CONTENT_URI, null, null);
                 ContentValues[] loaderArray = new ContentValues[loaderVector.size()];
                 loaderVector.toArray(loaderArray);
-                int rowsInserted = context.getContentResolver()
-                        .bulkInsert(VetsTable.CONTENT_URI, loaderArray);
+                context.getContentResolver().bulkInsert(VetsTable.CONTENT_URI, loaderArray);
             }
         }
         catch (JSONException je) {
@@ -327,20 +319,18 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private void getVetDetails(ContentValues vetDataValues, String vetPlaceID) {
 
-        HttpURLConnection detailURLConnection = null;
+        HttpURLConnection detailURLConnection;
         String vetDetailString = "";
 
         final String VETS_PHONE_NUMBER = "formatted_phone_number";
         final String VET_RESULTS = "result";
 
-        String radius = "10000";  //  In meters
-        String types = "veterinary_care";
         Uri builder = Uri.parse("https://maps.googleapis.com/maps/api/place/details/json?").buildUpon()
                 .appendQueryParameter("placeid", vetPlaceID)
                 .appendQueryParameter("key", key)
                 .build();
 
-        URL vetsDetailURL = null;
+        URL vetsDetailURL;
         try {
             vetsDetailURL = new URL(builder.toString());
         } catch (MalformedURLException mue) {
@@ -361,7 +351,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
 
             reader = new BufferedReader(new InputStreamReader(inputStream));
 
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             // Read the input stream into a String
             String line;
             while ((line = reader.readLine()) != null) {
@@ -374,7 +364,7 @@ public class VetFinderSyncAdapter extends AbstractThreadedSyncAdapter {
                 return;
             }
         } catch (IOException ioe) {
-            Log.e(LOG_TAG, "MYPETS IO ERROR: " + ioe.getMessage());
+            Log.e(LOG_TAG, "CaretakerMe IO ERROR: " + ioe.getMessage());
         }
 
         try {

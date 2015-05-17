@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -16,15 +16,14 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static com.garrison.mypets.data.MyPetsContract.PetsEmergencyContactsTable;
+import static com.garrison.caretakerme.data.CaretakerMeContract.PetsEmergencyContactsTable;
 
 
 /**
  * Created by Garrison on 10/18/2014.
  */
-public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, ContactsAdapter.Callback {
+public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private final String LOG_TAG = ContactsFragment.class.getSimpleName();
     private static final int CONTACTS_LOADER = 4;
 
     private ListView mContactsListView = null;
@@ -114,7 +113,6 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         mContactsAdapter.swapCursor(null);
     }
 
-    @Override
     public void viewContact(int pos) {
         Cursor cursor = (Cursor) mContactsListView.getItemAtPosition(pos);
         ((Callback)getActivity()).onItemSelected(
@@ -127,7 +125,6 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
     public void shareContact(int pos) {
 
         Cursor cursor = (Cursor) mContactsListView.getItemAtPosition(pos);
-        int _ID = cursor.getInt(ADAPTER_BINDER_COL_EMER_CONTACT_ID);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
@@ -136,9 +133,9 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
 
         String emailAddress = cursor.getString(ADAPTER_BINDER_COL_EMER_CONTACT_EMAIL);
         shareIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{ emailAddress });
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getText(R.string.share_email_subject));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getText(R.string.share_message));
-        startActivity(Intent.createChooser(shareIntent, getText(R.string.share_message)));
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, getText(R.string.email_subject_contacts));
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getText(R.string.share_message_contact));
+        startActivity(Intent.createChooser(shareIntent, getText(R.string.share_contacts_header)));
     }
 
     public void clearContact(int pos) {

@@ -1,4 +1,4 @@
-package com.garrison.mypets.util;
+package com.garrison.caretakerme.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -45,17 +45,11 @@ public class ImageHandler {
         String absoluteUri = ImageHandler.getRealPathFromURI(context, Uri.parse(photoUri));
         BitmapFactory.decodeFile(absoluteUri, options);
 
-
         options.inJustDecodeBounds = true;
-        int imageHeight = options.outHeight;
-        int imageWidth = options.outWidth;
-        String imageType = options.outMimeType;
-
         options.inSampleSize = calculateInSampleSize(options, newWidth, newHeight);
         options.inJustDecodeBounds = false;
-        Bitmap bitmap = BitmapFactory.decodeFile(absoluteUri, options);
 
-        return bitmap;
+        return BitmapFactory.decodeFile(absoluteUri, options);
     }
 
     public static int calculateInSampleSize(

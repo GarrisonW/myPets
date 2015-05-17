@@ -1,4 +1,4 @@
-package com.garrison.mypets.util;
+package com.garrison.caretakerme.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.garrison.mypets.R;
+import com.garrison.caretakerme.R;
 
 /**
  * Created by Garrison on 1/22/2015.
@@ -66,6 +66,7 @@ public class LocationFinder {
             double latitude = loc.getLatitude();
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor prefsEditor = prefs.edit();
+
             prefsEditor.putLong(context.getString(R.string.pref_latitude), Double.doubleToLongBits(latitude));
             prefsEditor.putLong(context.getString(R.string.pref_longitude), Double.doubleToLongBits(longitude));
             prefsEditor.commit();

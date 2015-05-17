@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.app.Activity;
 import android.content.ContentValues;
@@ -26,8 +26,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.garrison.mypets.util.ImageHandler;
-import com.garrison.mypets.data.MyPetsContract.PetTable;
+import com.garrison.caretakerme.data.CaretakerMeContract.PetTable;
+import com.garrison.caretakerme.util.ImageHandler;
 
 /**
  * Created by Garrison on 10/4/2014.
@@ -118,7 +118,6 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
         outState.putString(BUNDLE_MEDS_FREE_TEXT, mPetMedsFreeText);
         outState.putInt(BUNDLE_FREQUENCY_POS, mFrequencyPos);
         outState.putString(BUNDLE_OTHER_FREE_TEXT, mPetOtherFreeText);
-
         outState.putString(BUNDLE_MICROCHIP, mPetMicrochipID);
     }
 
@@ -250,7 +249,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
             mAvatarUriString = mImageUri.toString();
 
             mSizedBitmap  = ImageHandler.resizeImage(mContext, mAvatarUriString, 40, 40);
-            ImageView petAvatarImageView = (ImageView) viewHolder.petAvatarImageView;
+            ImageView petAvatarImageView = viewHolder.petAvatarImageView;
             petAvatarImageView.setImageBitmap(mSizedBitmap);
 
         }
@@ -263,10 +262,11 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
         String species_text = (String) viewHolder.petSpeciesSpinner.getSelectedItem();
         long color_pos = viewHolder.petColorSpinner.getSelectedItemId();
         String color_text = (String) viewHolder.petColorSpinner.getSelectedItem();
-        String petBreed = (String) (String) viewHolder.petBreedEditText.getText().toString();
+        String petBreed = viewHolder.petBreedEditText.getText().toString();
         String dietText = viewHolder.petDietEditText.getText().toString();
         String medsFreeText = viewHolder.petMedsEditText.getText().toString();
         long frequency_pos = viewHolder.petFrequencySpinner.getSelectedItemId();
+        String frequency_text = (String) viewHolder.petFrequencySpinner.getSelectedItem();
         String microchipID = viewHolder.petMicrochipEditText.getText().toString();
         String otherFreeText = viewHolder.petOtherEditText.getText().toString();
 
@@ -283,7 +283,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
                 medsFreeText.length() == 0 &&
                 microchipID.length() == 0 &&
                 otherFreeText.length() == 0 &&
-                mAvatarUriString == holdUriString)
+                mAvatarUriString.equals(holdUriString))
             petActuallyEntered = false;
         else
             petActuallyEntered = true;
@@ -299,6 +299,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
             petValues.put(PetTable.COLUMN_COLOR_TEXT, color_text);
             petValues.put(PetTable.COLUMN_DIET, dietText);
             petValues.put(PetTable.COLUMN_DIET_FREQUENCY_POS, frequency_pos);
+            petValues.put(PetTable.COLUMN_DIET_FREQUENCY_TEXT, frequency_text);
             petValues.put(PetTable.COLUMN_MEDS_FREE_TEXT, medsFreeText);
             petValues.put(PetTable.COLUMN_MICROCHIP, microchipID);
             petValues.put(PetTable.COLUMN_AVATAR_URI, mAvatarUriString);
@@ -307,9 +308,9 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
             //  If _ID = -1, then user selected "new pet"
             if (_ID > 0) {
                 String updateStmt = PetTable._ID + " = " + _ID;
-                int numRows = mContext.getContentResolver().update(PetTable.buildPetUri(_ID), petValues, updateStmt, null);
+                mContext.getContentResolver().update(PetTable.buildPetUri(_ID), petValues, updateStmt, null);
             } else {
-                Uri petInsertUri = mContext.getContentResolver().insert(PetTable.CONTENT_URI, petValues);
+                mContext.getContentResolver().insert(PetTable.CONTENT_URI, petValues);
             }
         }
     }
@@ -339,6 +340,7 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
                 PetTable.COLUMN_COLOR_TEXT,
                 PetTable.COLUMN_DIET,
                 PetTable.COLUMN_DIET_FREQUENCY_POS,
+                PetTable.COLUMN_DIET_FREQUENCY_TEXT,
                 PetTable.COLUMN_MEDS_FREE_TEXT,
                 PetTable.COLUMN_MICROCHIP,
                 PetTable.COLUMN_AVATAR_URI,
@@ -383,7 +385,6 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
             String petMicrochip = data.getString(data.getColumnIndex(PetTable.COLUMN_MICROCHIP));
             String petOtherFeeText = data.getString(data.getColumnIndex(PetTable.COLUMN_OTHER_FREE_TEXT));
             mAvatarUriString = data.getString(data.getColumnIndex(PetTable.COLUMN_AVATAR_URI));
-
 
             if (mAvatarUriString != null) {
                 mSizedBitmap = ImageHandler.resizeImage(mContext, mAvatarUriString, 40, 40);

@@ -1,4 +1,4 @@
-package com.garrison.mypets;
+package com.garrison.caretakerme;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -18,7 +18,5 @@ public class PetActivity extends ActionBarActivity {
     public MenuInflater getMenuInflater() {
         return super.getMenuInflater();
     }
-
-
 
 }
