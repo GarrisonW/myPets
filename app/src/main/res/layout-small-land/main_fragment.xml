@@ -17,9 +17,9 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:layout_weight="2"
-        android:layout_margin="15dp"
+        android:layout_margin="5dp"
+        android:layout_gravity="center"
         android:background="@drawable/abc_ab_solid_dark_holo">
 
         <Button
@@ -27,12 +27,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/button_emergency_contacts"
             android:text="@string/button_emergency_contacts"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="@string/emergency_contacts"
             android:textColor="@color/caretakerme_yellow"
-            android:textAppearance="@android:style/TextAppearance.Large"
             android:background="@color/caretakerme_tan" />
 
         <Button
@@ -40,12 +39,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/button_find_vet"
             android:text="@string/button_find_vet"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:hint="@string/button_find_vet"
             android:textColor="@color/caretakerme_yellow"
-            android:textAppearance="@android:style/TextAppearance.Large"
             android:background="@color/caretakerme_tan" />
     </LinearLayout>
 
@@ -53,13 +51,13 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_margin="15dp"
+        android:layout_margin="5dp"
         android:layout_weight="3"
         android:background="@drawable/abc_ab_solid_dark_holo">
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:id="@+id/num_pets_summary"
             android:text="@string/formatted_pet_count"
             android:textColor="@color/caretakerme_text"
@@ -67,12 +65,11 @@
             android:layout_gravity="top"
             android:typeface="normal"
             android:textStyle="bold"
-            android:textIsSelectable="false"
-            android:textAppearance="@android:style/TextAppearance.Large"/>
+            android:textIsSelectable="false"/>
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="189dp"
+            android:layout_height="wrap_content"
             android:id="@+id/listview_pets" />
     </LinearLayout>
 

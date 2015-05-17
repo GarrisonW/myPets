@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.garrison.mypets" >
+    package="com.garrison.caretakerme"
+    android:versionCode="1"
+    android:versionName="1.0">
 
     <!-- Permissions required by contact -->
     <uses-permission
@@ -39,7 +41,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/mypets_launcher"
+        android:icon="@drawable/caretakerme_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
@@ -49,7 +51,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.garrison.caretakerme.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -59,45 +61,45 @@
         </activity>
 
         <activity
-            android:name=".PetActivity"
+            android:name="com.garrison.caretakerme.PetActivity"
             android:label="@string/title_new_pet"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.garrison.mypets.MainActivity" />
+                android:value="com.garrison.caretakerme.MainActivity" />
         </activity>
 
         <activity
-            android:name=".ContactsActivity"
+            android:name="com.garrison.caretakerme.ContactsActivity"
             android:label="@string/title_contacts"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.garrison.mypets.ContactsActivity" />
+                android:value="com.garrison.caretakerme.ContactsActivity" />
         </activity>
 
         <activity
-            android:name=".VetsMapActivity"
+            android:name="com.garrison.caretakerme.VetsMapActivity"
             android:label="@string/title_vet_finder"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.garrison.mypets.VetMapActivity" />
+                android:value="com.garrison.caretakerme.VetsMapActivity" />
         </activity>
 
         <provider
             android:authorities="@string/content_authority"
             android:syncable="true"
             android:exported="false"
-            android:name=".data.MyPetsProvider">
+            android:name=".data.CaretakerMeProvider">
         </provider>
 
         <service
-            android:name=".services.ContactsNotificationService">
+            android:name="com.garrison.caretakerme.services.ContactsNotificationService">
         </service>
 
         <service
-            android:name=".sync.VetFinderAuthenticatorService">
+            android:name="com.garrison.caretakerme.sync.VetFinderAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -108,7 +110,7 @@
 
         <!-- The SyncAdapter service -->
         <service
-            android:name=".sync.VetFinderSyncService"
+            android:name="com.garrison.caretakerme.sync.VetFinderSyncService"
             android:exported="true"
             >
             <intent-filter>

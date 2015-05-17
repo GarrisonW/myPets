@@ -4,12 +4,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="15dp"
+    android:layout_margin="25dp"
     android:background="@drawable/abc_ab_solid_dark_holo">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:id="@+id/num_pets_summary"
         android:text="@string/pet_contact_header"
         android:textColor="@color/caretakerme_text"
@@ -17,13 +17,12 @@
         android:layout_gravity="top"
         android:typeface="normal"
         android:textStyle="bold"
-        android:textIsSelectable="false"
-        android:textAppearance="@android:style/TextAppearance.Large"/>
+        android:textIsSelectable="false"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_margin="15dp"
         android:id="@+id/listview_contacts"/>
 
 </LinearLayout>

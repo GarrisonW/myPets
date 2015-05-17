@@ -13,9 +13,9 @@
 
         <ImageView
             android:id="@+id/imageview_pet_avatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="15dp"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:src="@drawable/caretakerme_launcher"/>
 
@@ -32,7 +32,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:textColor="@color/caretakerme_text"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <EditText xmlns:android="http://schemas.android.com/apk/res/android"
                 android:inputType="textCapSentences"
@@ -44,7 +44,7 @@
                 android:hint="@string/edittext_name_hint"
                 android:textColor="@color/caretakerme_text_input"
                 android:textColorHint="@color/caretakerme_hint"
-                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textAppearance="@android:style/TextAppearance.Small"
                 android:autoText="true" />
         </LinearLayout>
     </LinearLayout>
@@ -62,26 +62,26 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/spinner_title_species"
                 android:textColor="@color/caretakerme_text"
-                android:textIsSelectable="false"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textIsSelectable="false"/>
 
             <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/spinner_species"
-                android:textAppearance="@android:style/TextAppearance.Medium"/>
+                android:textAppearance="@android:style/TextAppearance.Small"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/breed_title"
                 android:textColor="@color/caretakerme_text"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <EditText xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -91,57 +91,56 @@
                 android:hint="@string/edittext_breed_hint"
                 android:textColor="@color/caretakerme_text_input"
                 android:textColorHint="@color/caretakerme_hint"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                android:textAppearance="@android:style/TextAppearance.Small" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/spinner_title_color"
                 android:textColor="@color/caretakerme_text"
-                android:textIsSelectable="false"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"
+                android:textIsSelectable="false"/>
 
             <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
-                android:id="@+id/spinner_color"
-                android:textAppearance="@android:style/TextAppearance.Medium"/>
+                android:paddingLeft="5dp"
+                android:id="@+id/spinner_color"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/spinner_title_frequency"
                 android:textColor="@color/caretakerme_text"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <EditText xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textCapSentences"
-                android:paddingLeft="15dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/edittext_diet"
                 android:hint="@string/edittext_diet_hint"
                 android:textColor="@color/caretakerme_text_input"
                 android:textColorHint="@color/caretakerme_hint"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                android:textAppearance="@android:style/TextAppearance.Small" />
 
             <Spinner xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="15dp"
+                android:paddingLeft="5dp"
                 android:id="@+id/spinner_frequency"
                 android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/meds_title"
                 android:textColor="@color/caretakerme_text"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <EditText xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -151,15 +150,15 @@
                 android:hint="@string/edittext_meds_hint"
                 android:textColor="@color/caretakerme_text_input"
                 android:textColorHint="@color/caretakerme_hint"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                android:textAppearance="@android:style/TextAppearance.Small" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/microchip_title"
                 android:textColor="@color/caretakerme_text"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <EditText xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -168,15 +167,15 @@
                 android:hint="@string/edittext_microchip_hint"
                 android:textColor="@color/caretakerme_text_input"
                 android:textColorHint="@color/caretakerme_hint"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                android:textAppearance="@android:style/TextAppearance.Small" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="@string/other_title"
                 android:textColor="@color/caretakerme_text"
-                android:textAppearance="@android:style/TextAppearance.Large"/>
+                android:textAppearance="@android:style/TextAppearance.Medium"/>
 
             <EditText xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
@@ -186,7 +185,7 @@
                 android:hint="@string/edittext_other_hint"
                 android:textColor="@color/caretakerme_text_input"
                 android:textColorHint="@color/caretakerme_hint"
-                android:textAppearance="@android:style/TextAppearance.Medium" />
+                android:textAppearance="@android:style/TextAppearance.Small" />
 
         </LinearLayout>
     </ScrollView>

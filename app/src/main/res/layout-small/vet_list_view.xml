@@ -11,30 +11,30 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/list_vetGuts"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_gravity="left"
         android:orientation="horizontal">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="vertical"
-            android:layout_width="45dp"
+            android:layout_width="35dp"
             android:layout_height="match_parent"
             android:layout_gravity="left"
             android:background="@drawable/abc_ab_solid_dark_holo">
 
             <ImageView
                 android:id="@+id/list_vet_status_image"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_marginBottom="5dp"
                 android:layout_gravity="center"
                 android:src="@drawable/circle_yellow"/>
 
             <Button
                 android:id="@+id/list_vet_call"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_action_call_green"/>
 
@@ -52,23 +52,17 @@
             <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:textColor="@color/caretakerme_text"
                 android:id="@+id/list_vet_name"
-
-                android:text="HERE"
-
-                android:textAppearance="@android:style/TextAppearance.Large" />
+                android:text="HERE"/>
 
             <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/caretakerme_text"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/list_vet_address"
-
                 android:text="HERE"
-
                 android:textAppearance="@android:style/TextAppearance.Small" />
 
         </LinearLayout>

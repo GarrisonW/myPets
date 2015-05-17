@@ -20,25 +20,25 @@
             android:id="@+id/vets_map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="260dp"/>
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
             android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:background="@drawable/abc_ab_solid_dark_holo">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/circle_green"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:text="@string/text_open"
                 android:textColor="@color/caretakerme_text"
@@ -46,32 +46,40 @@
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/circle_red"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:text="@string/text_closed"
                 android:textColor="@color/caretakerme_text"
                 android:textAppearance="@android:style/TextAppearance.Small"/>
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/abc_ab_solid_dark_holo">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/circle_yellow"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="24dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center_vertical"
                 android:text="@string/text_unknown"
                 android:textColor="@color/caretakerme_text"
                 android:textAppearance="@android:style/TextAppearance.Small"/>
-
         </LinearLayout>
 
     </LinearLayout>

@@ -8,13 +8,13 @@
     android:background="@color/caretakerme_tan">
 
     <FrameLayout
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_width="40dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
         <ImageView
             android:id="@+id/list_contacts_photo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_gravity="center"
             android:src="@drawable/caretakerme_launcher"/>
     </FrameLayout>
@@ -25,20 +25,19 @@
         android:layout_marginLeft="10dp"
         android:layout_gravity="center_vertical"
         android:layout_weight="7"
-        android:id="@+id/list_contact_primary_name"
-        android:textAppearance="@android:style/TextAppearance.Large"/>
+        android:id="@+id/list_contact_primary_name"/>
 
     <Button
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="center_vertical|right"
         android:layout_margin="10dp"
         android:background="@drawable/ic_action_email"
         android:id="@+id/share_contact_button"/>
 
     <Button
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_gravity="center_vertical|right"
         android:layout_marginRight="5dp"
         android:background="@drawable/ic_action_remove_white"

@@ -2,9 +2,9 @@
 
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.garrison.mypets.PetFragment"
+    tools:context="com.garrison.caretakerme.PetFragment"
     tools:ignore="MergeRootFrame"
     android:id="@+id/pet_fragment"
-    android:name="com.garrison.mypets.PetFragment"
+    android:name="com.garrison.caretakerme.PetFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"/>

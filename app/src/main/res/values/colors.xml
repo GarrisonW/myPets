@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mypets_tan">#89bdc39f</color>
-    <color name="mypets_grey">#ffe1e1e1</color>
-    <color name="mypets_yellow">#FFFFE145</color>
-    <color name="mypets_text">#ffffffff</color>
-    <color name="mypets_text_input">#ff000000</color>
-    <color name="mypets_hint">#ff6b6b6b</color>
+    <color name="caretakerme_tan">#89bdc39f</color>
+    <color name="caretakerme_grey">#ffe1e1e1</color>
+    <color name="caretakerme_yellow">#FFFFE145</color>
+    <color name="caretakerme_text">#ffffffff</color>
+    <color name="caretakerme_text_input">#ff000000</color>
+    <color name="caretakerme_hint">#ff6b6b6b</color>
 </resources>
