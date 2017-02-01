@@ -14,10 +14,11 @@
     <string name="button_emergency_contacts">Emergency Contacts</string>
     <string name="button_find_vet">Find a Vet Now</string>
 
-    <string name="add_pet">New Pet</string>
+    <string name="action_add_pet">New Pet</string>
     <string name="action_remove_pet">Remove Pet</string>
     <string name="action_share_pet">Share</string>
     <string name="action_settings">Settings</string>
+    <string name="action_privacy">Privacy Policy</string>
     <string name="action_caresheet">Share CareSheet</string>
 
     <string name="name_title">Pet name:</string>
@@ -108,9 +109,9 @@
 
 
     <!-- Google Places API Keys -->
-    <string name="api_key_sync_server">A</string>
-    <string name="api_key_sync_browser">A</string>
-    <string name="api_key_sync_android">A</string>
+    <string name="api_key_sync_server">AIzaSyBKc-I8XL5qI9lZady7D-fTtp0yZ652hww</string>
+    <string name="api_key_sync_browser">AIzaSyBmOJLOl_H9p2biJlv2vO6XI0q0W27IICU</string>
+    <string name="api_key_sync_android">AIzaSyCy5wOLJrRpcElXYuRA8YlFvZCYYpNCijQ</string>
 
     <string name="api_key_maps">AIzaSyCy5wOLJrRpcElXYuRA8YlFvZCYYpNCijQ</string>
 
