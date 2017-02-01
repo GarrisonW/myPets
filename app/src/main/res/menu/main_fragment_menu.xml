@@ -6,13 +6,18 @@
     tools:context=".MainActivity" >
 
     <item android:id="@+id/action_add_pet"
-        android:title="@string/add_pet"
+        android:title="@string/action_add_pet"
         android:orderInCategory="100"
         app:showAsAction="never" />
 
     <item android:id="@+id/action_share_caresheet_main"
         android:title="@string/action_caresheet"
         android:orderInCategory="200"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_privacy_main"
+        android:title="@string/action_privacy"
+        android:orderInCategory="300"
         app:showAsAction="never" />
 
 </menu>
