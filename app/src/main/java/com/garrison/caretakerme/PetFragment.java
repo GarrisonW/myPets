@@ -174,7 +174,6 @@ public class PetFragment extends Fragment implements LoaderManager.LoaderCallbac
            if (mAvatarUriString != null) {
                mSizedBitmap  = ImageHandler.resizeImage(mContext, mAvatarUriString, 40, 40);
                petAvatar.setImageBitmap(mSizedBitmap);
-               Log.v(LOG_TAG, "BITMAP SIZE: W: " + mSizedBitmap.getWidth() + " H: " + mSizedBitmap.getHeight());
            }
 
            mSpeciesPos = savedInstanceState.getInt(BUNDLE_SPECIES_POS);

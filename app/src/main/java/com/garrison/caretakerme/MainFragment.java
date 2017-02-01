@@ -172,6 +172,10 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
             shareCareSheet();
             return true;
         }
+        if (id == R.id.action_privacy_main) {
+            launchPrivacy();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -259,6 +263,13 @@ public class MainFragment extends Fragment implements LoaderManager.LoaderCallba
         petSelectorDialog.setPetNames(petNames);
         petSelectorDialog.setTargetFragment(this, 0);
         petSelectorDialog.show(getFragmentManager(), "PetSelectDialog");
+    }
+
+    private void launchPrivacy() {
+        String url = "http://www.garrisonw.com/caretakerme/privacy.htm";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     @Override
