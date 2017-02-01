@@ -5,7 +5,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/abc_ab_solid_dark_holo">
+    android:background="@android:color/black">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight="4"
-        android:background="@drawable/abc_ab_solid_dark_holo">
+        android:background="@android:color/black">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/vets_map"
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/abc_ab_solid_dark_holo">
+            android:background="@android:color/black">
 
             <ImageView
                 android:layout_width="wrap_content"
